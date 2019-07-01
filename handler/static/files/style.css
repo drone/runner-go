@@ -1,0 +1,210 @@
+:root {
+    --font-sans: -apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
+    --font-mono: Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace;
+}
+
+html, body {
+    background: #f7f8fa;
+    color: #1e375a;
+    width: 100%;
+    height: 100%;
+    font-family: var(--font-sans);
+    font-size: 15px;
+}
+
+main {
+    box-sizing: border-box;
+    max-width: 800px;
+    margin: 0px auto;
+    margin-bottom: 30px;
+}
+
+main section > header h1 {
+    height: 41px;
+    font-size: 30px;
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #1e375a;
+    margin: 30px 0;
+}
+
+body > header {
+    height: 56px;
+    box-shadow: 0 2px 4px 0 rgba(30,55,90,.05);
+    box-sizing: border-box;
+    background-color: rgba(30,55,90,.97);
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+}
+
+header .logo {
+    width: 30px;
+    height: 30px;
+}
+
+.card {
+    box-shadow: 0 2px 4px 0 rgba(30,55,90,.1);
+    box-sizing: border-box;
+    border: 1px solid rgba(30,55,90,.05);
+    border-radius: 4px;
+    background-color: #fff;
+    margin-bottom: 10px;
+}
+
+/*
+ * stage card component
+ */
+
+.stage {
+    padding: 15px;
+    display: grid;
+    grid-gap: 10px 0px;
+    grid-template-columns: 30px 30px auto 150px;
+}
+
+.stage img {
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    grid-row: 2;
+    grid-column: 2;
+}
+
+.stage h2 {
+    color: #1e375a;
+    font-size: 18px;
+    grid-row: 1;
+    grid-column: 2 / span 3;
+}
+
+.stage .desc {
+    color: rgba(30,55,90,.6);
+    font-size: 14px;
+    grid-row: 2;
+    grid-column: 3;
+    align-items: center;
+    display: flex;
+}
+
+.stage time,
+.stage .time {
+    color: rgba(30,55,90,.6);
+    font-size: 14px;
+    grid-row: 2;
+    grid-column: 4;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.stage em {
+    background-color: rgba(35,100,210,.07);
+    border-radius: 2px;
+    color: #2364d2;
+    padding: 0 4px;
+    margin: 0 4px;
+    line-height: 17px;
+}
+
+.stage .connector {
+    width: 15px;
+    height: 15px;
+    opacity: .2;
+    border-bottom-left-radius: 8px;
+    border-left: 1px solid #1e375a;
+    border-bottom: 1px solid #1e375a;
+    display: block;
+    grid-row: 2;
+    grid-column: 1;
+    margin-top: -4px;
+    margin-left: 9px;
+}
+
+/**
+ * alert components
+ */
+
+.alert.sleeping {
+    box-shadow: 0 2px 4px 0 rgba(30,55,90,.1);
+    box-sizing: border-box;
+    border: 1px solid rgba(30,55,90,.05);
+    border-radius: 4px;
+    margin-bottom: 10px;
+    padding: 30px;
+    padding-top: 130px;
+    text-align: center;
+    background-color: #FFFFFF;
+    background-image: url(icons/sleeping.svg);
+    background-size: 80px;
+    background-position-x: center;
+    background-position-y: 30px;
+    background-repeat: no-repeat;
+}
+
+/**
+ * status component.
+ */
+
+.status {
+    background-color: #ff4164;
+    border-radius: 50%;
+    display: block;
+    width: 20px;
+    height: 20px;
+    background-image: url('icons/failure.svg');
+}
+
+.status.skipped {
+    background-color: #96a5be;
+    background-image: url('icons/skipped.svg');
+}
+
+.status.pending {
+    background-color: #96a5be;
+    background-image: url('icons/pending.svg');
+    animation: wrench 2s ease infinite;
+}
+
+.status.running {
+    background-image: url('icons/running.svg');
+    background-color: transparent;
+    animation: spin 2s linear infinite;
+}
+
+.status.success,
+.status.passing {
+    background-color: #19d78c;
+    background-image: url('icons/success.svg');
+}
+
+/*
+ * animations
+ */
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(359deg); }
+}
+
+@keyframes wrench {
+    0%  { transform: rotate(-12deg); }
+    8%  { transform: rotate(12deg); }
+    10% { transform: rotate(24deg); }
+    18% { transform: rotate(-24deg); }
+    20% { transform: rotate(-24deg); }
+    28% { transform: rotate(24deg); }
+    30% { transform: rotate(24deg); }
+    38% { transform: rotate(-24deg); }
+    40% { transform: rotate(-24deg); }
+    48% { transform: rotate(24deg); }
+    50% { transform: rotate(24deg); }
+    58% { transform: rotate(-24deg); }
+    60% { transform: rotate(-24deg); }
+    68% { transform: rotate(24deg); }
+    75%, 100% { transform: rotate(0deg); }
+}
