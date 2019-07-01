@@ -6,7 +6,7 @@
 
 package shell
 
-import "github.com/drone/runtime-go/runtime/shell/powershell"
+import "github.com/drone/runner-go/shell/powershell"
 
 // Command returns the powershell command and arguments.
 func Command() (string, []string) {
