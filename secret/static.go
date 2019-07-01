@@ -20,6 +20,20 @@ func Static(secrets []*drone.Secret) Provider {
 	return &static{secrets}
 }
 
+// StaticVars returns a new static secret provider. The static
+// secret provider finds and returns a named secret from the
+// static key value pairs.
+func StaticVars(vars map[string]string) Provider {
+	var secrets []*drone.Secret
+	for k, v := range vars {
+		secrets = append(secrets, &drone.Secret{
+			Name: k,
+			Data: v,
+		})
+	}
+	return Static(secrets)
+}
+
 type static struct {
 	secrets []*drone.Secret
 }

@@ -33,6 +33,26 @@ func TestStatic(t *testing.T) {
 	}
 }
 
+func TestStaticVars(t *testing.T) {
+	secrets := map[string]string{
+		"docker_username": "octocat",
+		"docker_password": "correct-horse-battery-staple",
+	}
+	args := &Request{
+		Name:  "docker_password",
+		Build: &drone.Build{Event: drone.EventPush},
+	}
+	service := StaticVars(secrets)
+	secret, err := service.Find(noContext, args)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	if secret.Data != secrets["docker_password"] {
+		t.Errorf("expect docker_password")
+	}
+}
+
 func TestStaticNotFound(t *testing.T) {
 	secrets := []*drone.Secret{
 		{Name: "docker_username"},
