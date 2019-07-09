@@ -12,6 +12,9 @@ import (
 	"strings"
 )
 
+// Suffix provides the shell script suffix.
+const Suffix = ".ps1"
+
 // Command returns the Powershell command and arguments.
 func Command() (string, []string) {
 	return "powershell", []string{

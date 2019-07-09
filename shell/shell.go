@@ -14,6 +14,9 @@ import (
 	"strings"
 )
 
+// Suffix provides the shell script suffix.
+const Suffix = ".sh"
+
 // Command returns the shell command and arguments.
 func Command() (string, []string) {
 	return "/bin/sh", []string{"-e"}
