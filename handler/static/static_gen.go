@@ -212,8 +212,8 @@ var files = map[string]file{
 		data: file9,
 		FileInfo: &fileInfo{
 			name:    "style.css",
-			size:    6123,
-			modTime: time.Unix(1562976038, 0),
+			size:    6266,
+			modTime: time.Unix(1563046133, 0),
 		},
 	},
 	"/timeago.js": {
@@ -1159,10 +1159,14 @@ header .logo {
 }
 
 .entry .message {
+    align-items: center;
+    background: #eaedf2;
+    border-radius: 3px;
+    display: flex;
+    line-height: 18px;
+    padding: 0px 5px;
     font-family: var(--font-mono);
     font-size: 13px;
-    display: flex;
-    align-items: center;
     grid-row: 1;
     grid-column: 2;
 }
@@ -1172,13 +1176,15 @@ header .logo {
     font-size: 13px;
     grid-row: 2;
     grid-column: 2;
+    display: inline-grid;
+    grid-row-gap: 5px;
 }
 
 .entry .time,
 .entry time {
     color: rgba(30,55,90,.6);
     font-size: 14px;
-    grid-row: 2;
+    grid-row: 1;
     grid-column: 3;
     text-align: right;
     display: flex;
