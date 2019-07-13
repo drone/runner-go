@@ -11,6 +11,7 @@ import (
 	"sort"
 
 	"github.com/drone/drone-go/drone"
+	hook "github.com/drone/runner-go/logger/history"
 	"github.com/drone/runner-go/pipeline/history"
 )
 
@@ -44,6 +45,15 @@ func HandleIndex(t *history.History) http.HandlerFunc {
 			nocache(w)
 			render(w, "index.tmpl", &data{Items: d})
 		}
+	}
+}
+
+// HandleLogHistory returns a http.HandlerFunc that displays a
+// list recent log entries.
+func HandleLogHistory(t *hook.Hook) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		nocache(w)
+		render(w, "logs.tmpl", t.Entries())
 	}
 }
 

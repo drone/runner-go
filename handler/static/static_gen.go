@@ -192,8 +192,16 @@ var files = map[string]file{
 			modTime: time.Unix(1561672384, 0),
 		},
 	},
-	"/reset.css": {
+	"/logs.html": {
 		data: file7,
+		FileInfo: &fileInfo{
+			name:    "logs.html",
+			size:    3675,
+			modTime: time.Unix(1562975420, 0),
+		},
+	},
+	"/reset.css": {
+		data: file8,
 		FileInfo: &fileInfo{
 			name:    "reset.css",
 			size:    990,
@@ -201,15 +209,15 @@ var files = map[string]file{
 		},
 	},
 	"/style.css": {
-		data: file8,
+		data: file9,
 		FileInfo: &fileInfo{
 			name:    "style.css",
-			size:    4363,
-			modTime: time.Unix(1561672632, 0),
+			size:    6123,
+			modTime: time.Unix(1562976038, 0),
 		},
 	},
 	"/timeago.js": {
-		data: file9,
+		data: file10,
 		FileInfo: &fileInfo{
 			name:    "timeago.js",
 			size:    3258,
@@ -800,8 +808,97 @@ timeago.render(document.querySelectorAll('.time'));
 </body>
 </html>`)
 
+// /logs.html
+var file7 = []byte(`<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Drone Runner Dashboard</title>
+<link rel="stylesheet" type="text/css" href="reset.css">
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src="timeago.js" type="text/javascript"></script>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><path d="M12.086 5.814l-.257.258 10.514 10.514C20.856 18.906 20 21.757 20 25c0 9.014 6.618 15 15 15 3.132 0 6.018-.836 8.404-2.353l10.568 10.568C48.497 55.447 39.796 60 30 60 13.434 60 0 46.978 0 30 0 19.903 4.751 11.206 12.086 5.814zm5.002-2.97C20.998 1.015 25.378 0 30 0c16.566 0 30 13.022 30 30 0 4.67-1.016 9.04-2.835 12.923l-9.508-9.509C49.144 31.094 50 28.243 50 25c0-9.014-6.618-15-15-15-3.132 0-6.018.836-8.404 2.353l-9.508-9.508zM35 34c-5.03 0-9-3.591-9-9s3.97-9 9-9c5.03 0 9 3.591 9 9s-3.97 9-9 9z" id="a"></path></defs><use fill="#FFF" xlink:href="#a" fill-rule="evenodd"></use></svg>
+    </div>
+</header>
+
+<main>
+    <section>
+        <header>
+            <h1>Recent Logs</h1>
+        </header>
+        <div class="alert sleeping">
+            <p>There is no recent log activity to display.</p>
+        </div>
+        <article class="logs">
+            <div class="entry">
+                <span class="level trace">trace</span>
+                <span class="message">received stage</span>
+                <span class="fields">
+                    <span><em>stage.id</em>95</span>
+                    <span><em>stage.name</em>test</span>
+                    <span><em>stage.number</em>1</span>
+                </span>
+                <span class="time" datetime="0"></span>
+            </div>
+            <div class="entry">
+                <span class="level debug">debug</span>
+                <span class="message">received stage</span>
+                <span class="fields">
+                    <span><em>stage.id</em>95</span>
+                    <span><em>stage.name</em>test</span>
+                    <span><em>stage.number</em>1</span>
+                </span>
+                <span class="time" datetime="0"></span>
+            </div>
+            <div class="entry">
+                <span class="level warn">warn</span>
+                <span class="message">received stage</span>
+                <span class="fields">
+                    <span><em>stage.id</em>95</span>
+                    <span><em>stage.name</em>test</span>
+                    <span><em>stage.number</em>1</span>
+                </span>
+                <span class="time" datetime="0"></span>
+            </div>
+            <div class="entry">
+                <span class="level error">error</span>
+                <span class="message">received stage</span>
+                <span class="fields">
+                    <span><em>stage.id</em>95</span>
+                    <span><em>stage.name</em>test</span>
+                    <span><em>stage.number</em>1</span>
+                </span>
+                <span class="time" datetime="0"></span>
+            </div>
+            <div class="entry">
+                <span class="level info">info</span>
+                <span class="message">received stage</span>
+                <span class="fields">
+                    <span><em>stage.id</em>95</span>
+                    <span><em>stage.name</em>test</span>
+                    <span><em>stage.number</em>1</span>
+                </span>
+                <span class="time" datetime="0"></span>
+            </div>
+        </article>
+    </section>
+</main>
+
+<footer></footer>
+
+<script>
+timeago.render(document.querySelectorAll('.time'));
+</script>
+</body>
+</html>`)
+
 // /reset.css
-var file7 = []byte(`html, body, div, span, applet, object, iframe,
+var file8 = []byte(`html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
@@ -846,7 +943,7 @@ table {
 }`)
 
 // /style.css
-var file8 = []byte(`:root {
+var file9 = []byte(`:root {
     --font-sans: -apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
     --font-mono: Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace;
 }
@@ -1031,6 +1128,116 @@ header .logo {
 }
 
 /*
+ * log entry components
+ */
+
+.logs {
+    box-shadow: 0 2px 4px 0 rgba(30,55,90,.1);
+    box-sizing: border-box;
+    border: 1px solid rgba(30,55,90,.05);
+    border-radius: 4px;
+    background-color: #fff;
+    margin-bottom: 10px;   
+}
+
+.entry {
+    padding: 15px;
+    display: grid;
+    grid-gap: 5px 10px;
+    grid-template-columns: 70px auto 150px;
+    border-bottom: 1px solid rgba(30,55,90,.05);
+}
+
+.entry:last-of-type {
+    border-bottom: none;
+}
+
+.entry .level {
+    grid-row: 1;
+    grid-column: 1;
+    max-height: 18px;
+}
+
+.entry .message {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    grid-row: 1;
+    grid-column: 2;
+}
+
+.entry .fields {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    grid-row: 2;
+    grid-column: 2;
+}
+
+.entry .time,
+.entry time {
+    color: rgba(30,55,90,.6);
+    font-size: 14px;
+    grid-row: 2;
+    grid-column: 3;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.level {
+    border-radius: 3px;
+    display: block;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    line-height: 18px;
+    min-width: 50px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.level.panic,
+.level.error {
+    background: #ff4164;
+    color: #FFF;
+}
+
+.level.warn {
+    background: #ffbe00;
+    color: #FFF;
+}
+
+.level.info {
+    background: #2364d2;
+    color: #fff;
+}
+
+.level.debug {
+    background: #96a5be;
+    color: #fff;
+}
+
+.level.trace {
+    background: #96a5be;
+    color: #fff;
+}
+
+.fields span {
+    background: #eaedf2;
+    border-radius: 3px;
+    padding: 3px 5px;
+    font-size: 11px;
+    color: #8d96a8;
+}
+
+.fields span em:after {
+    content: "=";
+    opacity: 0.5;
+    margin: 0px 3px;
+}
+
+/*
  * animations
  */
 
@@ -1058,7 +1265,7 @@ header .logo {
 }`)
 
 // /timeago.js
-var file9 = []byte(`!function(t, e) {
+var file10 = []byte(`!function(t, e) {
     "object" == typeof exports && "undefined" != typeof module ? e(exports) : "function" == typeof define && define.amd ? define(["exports"], e) : e(t.timeago = {})
 }(this, function(t) {
     "use strict";
