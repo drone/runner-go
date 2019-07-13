@@ -41,6 +41,7 @@ var index = `<!DOCTYPE html>
 <title>Dashboard</title>
 <link rel="stylesheet" type="text/css" href="/static/reset.css">
 <link rel="stylesheet" type="text/css" href="/static/style.css">
+<link rel="icon" type="image/png" id="favicon" href="/static/favicon.png">
 <script src="/static/timeago.js" type="text/javascript"></script>
 </head>
 <body>
@@ -96,6 +97,7 @@ var logs = `<!DOCTYPE html>
 <title>Dashboard</title>
 <link rel="stylesheet" type="text/css" href="/static/reset.css">
 <link rel="stylesheet" type="text/css" href="/static/style.css">
+<link rel="icon" type="image/png" id="favicon" href="/static/favicon.png">
 <script src="/static/timeago.js" type="text/javascript"></script>
 </head>
 <body>
