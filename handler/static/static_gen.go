@@ -196,16 +196,16 @@ var files = map[string]file{
 		data: file7,
 		FileInfo: &fileInfo{
 			name:    "index.html",
-			size:    3361,
-			modTime: time.Unix(1561672384, 0),
+			size:    3539,
+			modTime: time.Unix(1563049294, 0),
 		},
 	},
 	"/logs.html": {
 		data: file8,
 		FileInfo: &fileInfo{
 			name:    "logs.html",
-			size:    3675,
-			modTime: time.Unix(1562975420, 0),
+			size:    3853,
+			modTime: time.Unix(1563049256, 0),
 		},
 	},
 	"/reset.css": {
@@ -220,8 +220,8 @@ var files = map[string]file{
 		data: file10,
 		FileInfo: &fileInfo{
 			name:    "style.css",
-			size:    6266,
-			modTime: time.Unix(1563046133, 0),
+			size:    6669,
+			modTime: time.Unix(1563049338, 0),
 		},
 	},
 	"/timeago.js": {
@@ -912,10 +912,16 @@ var file7 = []byte(`<!DOCTYPE html>
 </head>
 <body>
 
-<header>
+<header class="navbar">
     <div class="logo">
         <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><path d="M12.086 5.814l-.257.258 10.514 10.514C20.856 18.906 20 21.757 20 25c0 9.014 6.618 15 15 15 3.132 0 6.018-.836 8.404-2.353l10.568 10.568C48.497 55.447 39.796 60 30 60 13.434 60 0 46.978 0 30 0 19.903 4.751 11.206 12.086 5.814zm5.002-2.97C20.998 1.015 25.378 0 30 0c16.566 0 30 13.022 30 30 0 4.67-1.016 9.04-2.835 12.923l-9.508-9.509C49.144 31.094 50 28.243 50 25c0-9.014-6.618-15-15-15-3.132 0-6.018.836-8.404 2.353l-9.508-9.508zM35 34c-5.03 0-9-3.591-9-9s3.97-9 9-9c5.03 0 9 3.591 9 9s-3.97 9-9 9z" id="a"></path></defs><use fill="#FFF" xlink:href="#a" fill-rule="evenodd"></use></svg>
     </div>
+    <nav class="inline-nav">
+        <ul>
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/logs">Logging</a></li>
+        </ul>
+    </nav>
 </header>
 
 <main>
@@ -983,10 +989,16 @@ var file8 = []byte(`<!DOCTYPE html>
 </head>
 <body>
 
-<header>
+<header class="navbar">
     <div class="logo">
         <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><path d="M12.086 5.814l-.257.258 10.514 10.514C20.856 18.906 20 21.757 20 25c0 9.014 6.618 15 15 15 3.132 0 6.018-.836 8.404-2.353l10.568 10.568C48.497 55.447 39.796 60 30 60 13.434 60 0 46.978 0 30 0 19.903 4.751 11.206 12.086 5.814zm5.002-2.97C20.998 1.015 25.378 0 30 0c16.566 0 30 13.022 30 30 0 4.67-1.016 9.04-2.835 12.923l-9.508-9.509C49.144 31.094 50 28.243 50 25c0-9.014-6.618-15-15-15-3.132 0-6.018.836-8.404 2.353l-9.508-9.508zM35 34c-5.03 0-9-3.591-9-9s3.97-9 9-9c5.03 0 9 3.591 9 9s-3.97 9-9 9z" id="a"></path></defs><use fill="#FFF" xlink:href="#a" fill-rule="evenodd"></use></svg>
     </div>
+    <nav class="inline-nav">
+        <ul>
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/logs">Logging</a></li>
+        </ul>
+    </nav>
 </header>
 
 <main>
@@ -1152,6 +1164,30 @@ body > header {
 header .logo {
     width: 30px;
     height: 30px;
+}
+
+.navbar .inline-nav {
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: flex-end;
+}
+
+.navbar .inline-nav li {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.navbar .inline-nav a,
+.navbar .inline-nav a:active,
+.navbar .inline-nav a:visited {
+    color: #FFF;
+    opacity: 0.75;
+    text-decoration: none;
+}
+
+.navbar .inline-nav a.active,
+.navbar .inline-nav a:hover {
+    opacity: 1;
 }
 
 .card {

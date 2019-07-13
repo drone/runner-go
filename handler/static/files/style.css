@@ -46,6 +46,30 @@ header .logo {
     height: 30px;
 }
 
+.navbar .inline-nav {
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: flex-end;
+}
+
+.navbar .inline-nav li {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.navbar .inline-nav a,
+.navbar .inline-nav a:active,
+.navbar .inline-nav a:visited {
+    color: #FFF;
+    opacity: 0.75;
+    text-decoration: none;
+}
+
+.navbar .inline-nav a.active,
+.navbar .inline-nav a:hover {
+    opacity: 1;
+}
+
 .card {
     box-shadow: 0 2px 4px 0 rgba(30,55,90,.1);
     box-sizing: border-box;
