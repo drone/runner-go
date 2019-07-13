@@ -104,6 +104,8 @@ func convertLevel(level logrus.Level) Level {
 		return LevelError
 	case logrus.FatalLevel:
 		return LevelError
+	case logrus.ErrorLevel:
+		return LevelError
 	case logrus.WarnLevel:
 		return LevelWarn
 	case logrus.DebugLevel:

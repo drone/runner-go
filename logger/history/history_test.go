@@ -27,10 +27,14 @@ func TestConvertLevels(t *testing.T) {
 	}{
 		{logrus.PanicLevel, LevelError},
 		{logrus.FatalLevel, LevelError},
+		{logrus.ErrorLevel, LevelError},
 		{logrus.WarnLevel, LevelWarn},
 		{logrus.InfoLevel, LevelInfo},
 		{logrus.DebugLevel, LevelDebug},
 		{logrus.TraceLevel, LevelTrace},
+	}
+	if len(tests) != len(logrus.AllLevels) {
+		t.Errorf("missing unit tests for all logrus levels")
 	}
 	for _, test := range tests {
 		if got, want := convertLevel(test.before), test.after; got != want {
