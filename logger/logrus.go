@@ -6,19 +6,20 @@ package logger
 
 import "github.com/sirupsen/logrus"
 
-// Logrus returns a Logger that wraps a logrus.Logger.
-func Logrus(logrus *logrus.Logger) Logger {
-	return &wrapLogrus{logrus}
+// Logrus returns a Logger that wraps a logrus.Entry.
+func Logrus(entry *logrus.Entry) Logger {
+	return &wrapLogrus{entry}
 }
 
 type wrapLogrus struct {
-	*logrus.Logger
+	*logrus.Entry
 }
 
 func (w *wrapLogrus) WithError(err error) Logger {
-	return &wrapLogrus{w.Logger.WithError(err).Logger}
+	return &wrapLogrus{w.Entry.WithError(err)}
+	return nil
 }
 
 func (w *wrapLogrus) WithField(key string, value interface{}) Logger {
-	return &wrapLogrus{w.Logger.WithField(key, value).Logger}
+	return &wrapLogrus{w.Entry.WithField(key, value)}
 }

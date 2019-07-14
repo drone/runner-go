@@ -11,7 +11,11 @@ import (
 )
 
 func TestLogrus(t *testing.T) {
-	logger := Logrus(logrus.StandardLogger())
+	logger := Logrus(
+		logrus.NewEntry(
+			logrus.StandardLogger(),
+		),
+	)
 	if _, ok := logger.(*wrapLogrus); !ok {
 		t.Errorf("Expect wrapped logrus")
 	}
