@@ -10,6 +10,7 @@
                 "Number": 42
             },
             "Stage": {
+                "ID": 1,
                 "Name": "test",
                 "Status": "success",
                 "Started": 1563059000,

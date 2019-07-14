@@ -1,7 +1,6 @@
 {
     "Items": [
         {
-            "ID": 1,
             "Idle": false,
             "Repo": {
                 "Slug": "octocat/hello-world"
@@ -11,6 +10,7 @@
                 "Number": 42
             },
             "Stage": {
+                "ID": 1,
                 "Name": "test",
                 "Status": "running",
                 "Started": 1563059000,

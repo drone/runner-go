@@ -77,7 +77,7 @@ var index = `<!DOCTYPE html>
             </div>
             {{ end }}
             {{ range .Items }}
-            <a href="/stage/{{ .ID }}" class="card stage">
+            <a href="/stage/{{ .Stage.ID }}" class="card stage">
                 <h2>{{ .Repo.Slug }}</h2>
                 <img src="{{ .Build.AuthorAvatar }}" />
                 <span class="connector"></span>
