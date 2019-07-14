@@ -53,9 +53,7 @@ func HandleIndex(t *history.History) http.HandlerFunc {
 // stage details.
 func HandleStage(t *history.History) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		d := t.Entries()
-		s := r.FormValue("id")
-		id, _ := strconv.ParseInt(s, 10, 64)
+		id, _ := strconv.ParseInt(r.FormValue("id"), 10, 64)
 		for _, e := range t.Entries() {
 			if e.Stage.ID == id {
 				nocache(w)
