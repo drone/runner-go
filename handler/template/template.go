@@ -18,8 +18,8 @@ var re = regexp.MustCompile("\\d+")
 
 // mirros the func map in template.go
 var funcMap = map[string]interface{}{
-	"timestamp": func(v float64) string {
-		return time.Unix(int64(v), 0).UTC().Format("2006-01-02T15:04:05Z")
+	"timestamp": func(v int64) string {
+		return time.Unix(v, 0).UTC().Format("2006-01-02T15:04:05Z")
 	},
 	"pr": func(s string) string {
 		return re.FindString(s)
