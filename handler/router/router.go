@@ -36,7 +36,7 @@ func New(tracer *history.History, history *hook.Hook, config Config) http.Handle
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))
 	mux.HandleFunc("/healthz", handler.HandleHealth(tracer))
 	mux.Handle("/logs", auth(handler.HandleLogHistory(history)))
-	mux.Handle("/stage", auth(handler.HandleStage(tracer)))
+	mux.Handle("/view", auth(handler.HandleStage(tracer)))
 	mux.Handle("/", auth(handler.HandleIndex(tracer)))
 	return mux
 }

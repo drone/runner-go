@@ -59,7 +59,7 @@ func HandleStage(t *history.History) http.HandlerFunc {
 		for _, e := range t.Entries() {
 			if e.Stage.ID == id {
 				nocache(w)
-				render(w, "stage.tmpl", d)
+				render(w, "stage.tmpl", e)
 				return
 			}
 		}
