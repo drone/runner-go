@@ -33,6 +33,9 @@ type Logger interface {
 	WithField(string, interface{}) Logger
 }
 
+// Default returns the default logger.
+var Default = Discard()
+
 // Discard returns a no-op logger
 func Discard() Logger {
 	return &discard{}

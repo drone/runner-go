@@ -21,7 +21,7 @@ func WithContext(ctx context.Context, logger Logger) context.Context {
 func FromContext(ctx context.Context) Logger {
 	logger := ctx.Value(loggerKey{})
 	if logger == nil {
-		return Discard()
+		return Default
 	}
 	return logger.(Logger)
 }
