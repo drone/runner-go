@@ -27,9 +27,9 @@
         <header>
             <h1>Recent Logs</h1>
         </header>
-        {{ if . }}
+        {{ if .Entries }}
         <article class="logs">
-            {{ range . }}
+            {{ range .Entries }}
             <div class="entry">
                 <span class="level {{ .Level }}">{{ .Level }}</span>
                 <span class="message">{{ .Message }}</span>
@@ -38,7 +38,7 @@
                     <span><em>{{ $key }}</em>{{ $val }}</span>
                     {{ end }}
                 </span>
-                <span class="time" datetime="{{ timestamp .Time.Unix }}"></span>
+                <span class="time" datetime="{{ timestamp .Unix }}"></span>
             </div>
             {{ end }}
         </article>

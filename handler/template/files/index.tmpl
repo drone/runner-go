@@ -29,7 +29,7 @@
             <h1>Dashboard</h1>
         </header>
         <article class="cards stages">
-            {{ if .Empty }}
+            {{ if not .Items }}
             <div class="alert sleeping">
                 <p>There is no recent activity to display.</p>
             </div>
@@ -39,14 +39,14 @@
             </div>
             {{ end }}
             {{ range .Items }}
-            <div class="card stage">
+            <a href="/stage/{{ .ID }}" class="card stage">
                 <h2>{{ .Repo.Slug }}</h2>
                 <img src="{{ .Build.AuthorAvatar }}" />
                 <span class="connector"></span>
                 <span class="status {{ .Stage.Status }}"></span>
                 <span class="desc">assigned stage <em>{{ .Stage.Name }}</em> for build <em>#{{ .Build.Number }}</em></span>
                 <span class="time" datetime="{{ if .Stage.Started }}{{ timestamp .Stage.Started }}{{ else }}{{ timestamp .Stage.Created }}{{ end }}"></span>
-            </div>
+            </a>
             {{ end }}
         </article>
     </section>

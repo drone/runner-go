@@ -1,0 +1,21 @@
+{
+    "Items": [
+        {
+            "ID": 1,
+            "Idle": false,
+            "Repo": {
+                "Slug": "octocat/hello-world"
+            },
+            "Build": {
+                "AuthorAvatar": "https://avatars0.githubusercontent.com/u/583231?s=460&v=4",
+                "Number": 42
+            },
+            "Stage": {
+                "Name": "test",
+                "Status": "running",
+                "Started": 1563059000,
+                "Created": 1563059000
+            }
+        }
+    ]
+}

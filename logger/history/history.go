@@ -8,7 +8,6 @@ package history
 // to log recent log activity.
 import (
 	"sync"
-	"time"
 
 	"github.com/sirupsen/logrus"
 )
@@ -33,7 +32,7 @@ type Entry struct {
 	Level   Level
 	Message string
 	Data    map[string]interface{}
-	Time    time.Time
+	Unix    int64
 }
 
 // Hook is a logrus hook that track the log history.
@@ -63,7 +62,7 @@ func (h *Hook) Fire(e *logrus.Entry) error {
 	h.entries = append(h.entries, &Entry{
 		Level:   convertLevel(e.Level),
 		Data:    convertFields(e.Data),
-		Time:    e.Time,
+		Unix:    e.Time.Unix(),
 		Message: e.Message,
 	})
 	h.Unlock()

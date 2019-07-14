@@ -13,6 +13,9 @@ var files = []struct {
 	}, {
 		name: "logs.tmpl",
 		data: logs,
+	}, {
+		name: "stage.tmpl",
+		data: stage,
 	},
 }
 
@@ -64,7 +67,7 @@ var index = `<!DOCTYPE html>
             <h1>Dashboard</h1>
         </header>
         <article class="cards stages">
-            {{ if .Empty }}
+            {{ if not .Items }}
             <div class="alert sleeping">
                 <p>There is no recent activity to display.</p>
             </div>
@@ -74,14 +77,14 @@ var index = `<!DOCTYPE html>
             </div>
             {{ end }}
             {{ range .Items }}
-            <div class="card stage">
+            <a href="/stage/{{ .ID }}" class="card stage">
                 <h2>{{ .Repo.Slug }}</h2>
                 <img src="{{ .Build.AuthorAvatar }}" />
                 <span class="connector"></span>
                 <span class="status {{ .Stage.Status }}"></span>
                 <span class="desc">assigned stage <em>{{ .Stage.Name }}</em> for build <em>#{{ .Build.Number }}</em></span>
                 <span class="time" datetime="{{ if .Stage.Started }}{{ timestamp .Stage.Started }}{{ else }}{{ timestamp .Stage.Created }}{{ end }}"></span>
-            </div>
+            </a>
             {{ end }}
         </article>
     </section>
@@ -125,9 +128,9 @@ var logs = `<!DOCTYPE html>
         <header>
             <h1>Recent Logs</h1>
         </header>
-        {{ if . }}
+        {{ if .Entries }}
         <article class="logs">
-            {{ range . }}
+            {{ range .Entries }}
             <div class="entry">
                 <span class="level {{ .Level }}">{{ .Level }}</span>
                 <span class="message">{{ .Message }}</span>
@@ -136,13 +139,92 @@ var logs = `<!DOCTYPE html>
                     <span><em>{{ $key }}</em>{{ $val }}</span>
                     {{ end }}
                 </span>
-                <span class="time" datetime="{{ timestamp .Time.Unix }}"></span>
+                <span class="time" datetime="{{ timestamp .Unix }}"></span>
             </div>
             {{ end }}
         </article>
         {{ else }}
         <div class="alert sleeping">
             <p>There is no recent log activity to display.</p>
+        </div>
+        {{ end }}
+    </section>
+</main>
+
+<footer></footer>
+
+<script>
+timeago.render(document.querySelectorAll('.time'));
+</script>
+</body>
+</html>`
+
+// files/stage.tmpl
+var stage = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Dashboard</title>
+<link rel="stylesheet" type="text/css" href="/static/reset.css">
+<link rel="stylesheet" type="text/css" href="/static/style.css">
+<link rel="icon" type="image/png" id="favicon" href="/static/favicon.png">
+<script src="/static/timeago.js" type="text/javascript"></script>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">
+        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><path d="M12.086 5.814l-.257.258 10.514 10.514C20.856 18.906 20 21.757 20 25c0 9.014 6.618 15 15 15 3.132 0 6.018-.836 8.404-2.353l10.568 10.568C48.497 55.447 39.796 60 30 60 13.434 60 0 46.978 0 30 0 19.903 4.751 11.206 12.086 5.814zm5.002-2.97C20.998 1.015 25.378 0 30 0c16.566 0 30 13.022 30 30 0 4.67-1.016 9.04-2.835 12.923l-9.508-9.509C49.144 31.094 50 28.243 50 25c0-9.014-6.618-15-15-15-3.132 0-6.018.836-8.404 2.353l-9.508-9.508zM35 34c-5.03 0-9-3.591-9-9s3.97-9 9-9c5.03 0 9 3.591 9 9s-3.97 9-9 9z" id="a"></path></defs><use fill="#FFF" xlink:href="#a" fill-rule="evenodd"></use></svg>
+    </div>
+    <nav class="inline-nav">
+        <ul>
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/logs">Logging</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section>
+        <header>
+            <h1>{{ .Repo.Slug }}</h1>
+        </header>
+        
+        <div class="card stage">
+            <h2>{{ .Build.Message }}</h2>
+            <img src="{{ .Build.AuthorAvatar }}" />
+            <span class="connector"></span>
+            <span class="status {{ .Stage.Status }}"></span>
+            {{ if eq .Build.Event "pull_request" }}
+                {{ if eq .Build.Action "synchronized" }}
+                <span class="desc">{{ .Build.Author }} synchronized pull request <em>#{{ pr .Build.Ref }}</em></span>
+                {{ else }}
+                <span class="desc">{{ .Build.Author }} opened pull request <em>#{{ pr .Build.Ref }}</em> to <em>{{ .Build.Target }}</em></span>
+                {{ end }}
+            {{ else if eq .Build.Event "tag" }}
+            <span class="desc">{{ .Build.Author }} created reference <em>{{ tag .Build.Ref }}</em></span>
+            {{ else if eq .Build.Event "promote"}}
+            <span class="desc">{{ .Build.Author }} promoted build <em>#{{ .Build.Parent }}</em> to <em>{{ .Build.Deploy }}</em></span>
+            {{ else }}
+            <span class="desc">{{ .Build.Author }} pushed <em>{{ sha .Build.After }}</em> to <em>{{ .Build.Target }}</em></span>
+            {{ end }}
+            <span class="time" datetime="{{ if .Stage.Started }}{{ timestamp .Stage.Started }}{{ else }}{{ timestamp .Stage.Created }}{{ end }}"></span>
+        </div>
+
+        {{ if .Stage.Steps }}
+        <div class="card steps">
+            <header>
+                <span class="status {{ .Stage.Status }}"></span>
+                <span class="name">{{ .Stage.Name }}</span>
+            </header>
+            <div class="body">
+                {{ range .Stage.Steps }}
+                <div class="step">
+                    <span class="status {{ .Status }}"></span>
+                    <span class="name"> {{ .Name }}</span>
+                </div>
+                {{ end }}
+            </div>
         </div>
         {{ end }}
     </section>

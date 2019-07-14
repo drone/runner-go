@@ -9,6 +9,7 @@ package handler
 import (
 	"net/http"
 	"sort"
+	"strconv"
 
 	"github.com/drone/drone-go/drone"
 	hook "github.com/drone/runner-go/logger/history"
@@ -48,12 +49,33 @@ func HandleIndex(t *history.History) http.HandlerFunc {
 	}
 }
 
+// HandleStage returns a http.HandlerFunc that displays the
+// stage details.
+func HandleStage(t *history.History) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		d := t.Entries()
+		s := r.FormValue("id")
+		id, _ := strconv.ParseInt(s, 10, 64)
+		for _, e := range t.Entries() {
+			if e.Stage.ID == id {
+				nocache(w)
+				render(w, "stage.tmpl", d)
+				return
+			}
+		}
+		// TODO(bradrydzewski) we need an error template.
+		w.WriteHeader(404)
+	}
+}
+
 // HandleLogHistory returns a http.HandlerFunc that displays a
 // list recent log entries.
 func HandleLogHistory(t *hook.Hook) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		nocache(w)
-		render(w, "logs.tmpl", t.Entries())
+		render(w, "logs.tmpl", struct {
+			Entries []*hook.Entry
+		}{t.Entries()})
 	}
 }
 
@@ -61,11 +83,6 @@ func HandleLogHistory(t *hook.Hook) http.HandlerFunc {
 // functions for calculating the system state.
 type data struct {
 	Items []*history.Entry
-}
-
-// helper function returns true if the history is empty.
-func (d *data) Empty() bool {
-	return len(d.Items) == 0
 }
 
 // helper function returns true if no running builds exists.

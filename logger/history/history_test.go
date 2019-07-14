@@ -93,13 +93,13 @@ func TestHistory(t *testing.T) {
 			Level:   LevelDebug,
 			Message: "foo",
 			Data:    logrus.Fields{"foo": "bar"},
-			Time:    now,
+			Unix:    now.Unix(),
 		},
 		{
 			Level:   LevelInfo,
 			Message: "bar",
 			Data:    logrus.Fields{"baz": "qux"},
-			Time:    now,
+			Unix:    now.Unix(),
 		},
 	}
 	if diff := cmp.Diff(entries, expect); diff != "" {

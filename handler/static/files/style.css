@@ -79,6 +79,10 @@ header .logo {
     margin-bottom: 10px;
 }
 
+a.card {
+    text-decoration: none;
+}
+
 /*
  * stage card component
  */
@@ -147,6 +151,69 @@ header .logo {
     grid-column: 1;
     margin-top: -4px;
     margin-left: 9px;
+}
+
+/*
+ * step components
+ */
+
+.steps header {
+    border-bottom: 1px solid rgba(30,55,90,.1);
+    display: grid;
+    grid-gap: 10px 0px;
+    grid-template-columns: 30px auto;
+    padding: 10px 15px;
+}
+
+.steps header .name {
+    align-items: center;
+    display: flex;
+    font-weight: 600;
+}
+
+.steps .step {
+    display: grid;
+    grid-gap: 10px 0px;
+    grid-template-columns: 30px auto;
+    padding: 10px 15px;
+}
+
+.steps .step:hover {
+    background: #f8f8fa;
+}
+
+.steps .step .name {
+    align-items: center;
+    display: flex;
+}
+
+.steps .body {
+    padding: 10px 0px;
+}
+
+.steps .status {
+    position: relative;
+}
+
+.steps .step .status:before,
+.steps .step .status:after {
+    border-left: 1px solid #1e375a;
+    content: " ";
+    height: 10px;
+    left: 50%;
+    opacity: 0.15;
+    position: absolute;
+    top: 20px;
+    width: 1px;
+}
+
+.steps .step .status:before {
+    top: -10px;
+}
+
+.steps .step:last-of-type .status:after,
+.steps .step:first-of-type .status:before {
+    display: none;
 }
 
 /**
