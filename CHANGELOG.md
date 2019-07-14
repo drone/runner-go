@@ -5,6 +5,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - logrus hook to store recent system logs
 - handler to visualize recent system logs
+- handler to visualize pipeline steps
 
 ## [1.0.0] - 2019-07-01
 ### Added
