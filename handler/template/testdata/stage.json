@@ -1,6 +1,7 @@
 {
     "Repo": {
-        "Slug": "octocat/hello-world"
+        "Slug": "octocat/hello-world",
+        "Name": "hello-world"
     },
     "Build": {
         "After": "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
@@ -19,7 +20,7 @@
         "Created": 1563059000,
         "Steps": [
             { "Name": "clone", "Status": "success" },
-            { "Name": "build", "Status": "success" },
+            { "Name": "build", "Status": "running" },
             { "Name": "test", "Status": "success" },
             { "Name": "deploy", "Status": "success" }
         ]

@@ -168,7 +168,6 @@ a.card {
 .steps header .name {
     align-items: center;
     display: flex;
-    font-weight: 600;
 }
 
 .steps .step {
@@ -191,29 +190,71 @@ a.card {
     padding: 10px 0px;
 }
 
-.steps .status {
+.steps .step {
     position: relative;
 }
 
-.steps .step .status:before,
-.steps .step .status:after {
+.steps .step:before,
+.steps .step:after {
     border-left: 1px solid #1e375a;
     content: " ";
     height: 10px;
-    left: 50%;
+    left: 25px;
     opacity: 0.15;
     position: absolute;
-    top: 20px;
     width: 1px;
 }
 
-.steps .step .status:before {
-    top: -10px;
+.steps .step:after {
+    bottom: 0px;
 }
 
-.steps .step:last-of-type .status:after,
-.steps .step:first-of-type .status:before {
+.steps .step:before {
+    top: 0px;
+}
+
+.steps .step:last-of-type:after,
+.steps .step:first-of-type:before {
     display: none;
+}
+
+/**
+ * breadcrumb component
+ */
+
+.breadcrumb {
+    margin-top: 35px;
+}
+
+.breadcrumb ul {
+    display: flex;
+}
+
+.breadcrumb ul li {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumb ul li.separator {
+    margin: 0px 15px;
+    width: 19px;
+    height: 19px;
+    display: inline-block;
+    background: url(/static/icons/arrow-right.svg) no-repeat center center;
+    transform: rotate(270deg);
+}
+
+.breadcrumb a,
+.breadcrumb a:active,
+.breadcrumb a:visited {
+    text-decoration: none;
+    color: #2364d2;
+    display: block;
+    line-height: 19px;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
 }
 
 /**

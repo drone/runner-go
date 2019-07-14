@@ -1,6 +1,7 @@
 {
     "Repo": {
-        "Slug": "octocat/hello-world"
+        "Slug": "octocat/hello-world",
+        "Name": "hello-world"
     },
     "Build": {
         "Ref": "refs/pull/42/head",

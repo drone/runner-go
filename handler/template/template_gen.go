@@ -164,7 +164,7 @@ var stage = `<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="refresh" content="10">
+<meta http-equiv="x-refresh" content="10">
 <title>Dashboard</title>
 <link rel="stylesheet" type="text/css" href="/static/reset.css">
 <link rel="stylesheet" type="text/css" href="/static/style.css">
@@ -187,8 +187,17 @@ var stage = `<!DOCTYPE html>
 
 <main>
     <section>
+        <nav class="breadcrumb">
+            <ul>
+                <li><a href="/">Dashboard</a></li>
+                <li class="separator"></li>
+                <li>{{ .Repo.Slug }}</li>
+                <li class="separator"></li>
+                <li>#{{ .Build.Number }}</li>
+            </ul>
+        </nav>
         <header>
-            <h1>{{ .Repo.Slug }}</h1>
+            <h1>{{ .Repo.Name }}</h1>
         </header>
         
         <div class="card stage">
