@@ -43,7 +43,7 @@ func New(tracer *history.History, history *hook.Hook, config Config) http.Handle
 	// dashboard handles.
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))
 	mux.Handle("/logs", auth(handler.HandleLogHistory(history)))
-	mux.Handle("/view", auth(handler.HandleStage(tracer)))
+	mux.Handle("/view", auth(handler.HandleStage(tracer, history)))
 	mux.Handle("/", auth(handler.HandleIndex(tracer)))
 	return mux
 }

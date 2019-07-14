@@ -107,3 +107,38 @@ func TestHistory(t *testing.T) {
 		t.Log(diff)
 	}
 }
+
+func TestFilter(t *testing.T) {
+	hook := New()
+
+	now := time.Now()
+	hook.Fire(&logrus.Entry{
+		Level:   logrus.DebugLevel,
+		Message: "foo",
+		Data:    logrus.Fields{"foo": "bar"},
+		Time:    now,
+	})
+
+	hook.Fire(&logrus.Entry{
+		Level:   logrus.InfoLevel,
+		Message: "bar",
+		Data:    logrus.Fields{"baz": "qux"},
+		Time:    now,
+	})
+
+	expect := []*Entry{
+		{
+			Level:   LevelDebug,
+			Message: "foo",
+			Data:    logrus.Fields{"foo": "bar"},
+			Unix:    now.Unix(),
+		},
+	}
+	entries := hook.Filter(func(entry *Entry) bool {
+		return entry.Data["foo"] == "bar"
+	})
+	if diff := cmp.Diff(entries, expect); diff != "" {
+		t.Errorf("Entries should return an exact copy of all entries")
+		t.Log(diff)
+	}
+}

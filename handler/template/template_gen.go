@@ -164,7 +164,9 @@ var stage = `<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="refresh" content="10">
+{{- if not (done .Stage.Status) }}
+<meta http-equiv="refresh" content="30">
+{{- end }}
 <title>Dashboard</title>
 <link rel="stylesheet" type="text/css" href="/static/reset.css">
 <link rel="stylesheet" type="text/css" href="/static/style.css">
@@ -223,18 +225,32 @@ var stage = `<!DOCTYPE html>
 
         {{ if .Stage.Steps }}
         <div class="card steps">
-            <header>
-                <span class="status {{ .Stage.Status }}"></span>
-                <span class="name">{{ .Stage.Name }}</span>
-            </header>
             <div class="body">
                 {{ range .Stage.Steps }}
                 <div class="step">
                     <span class="status {{ .Status }}"></span>
-                    <span class="name"> {{ .Name }}</span>
+                    <span class="name">{{ .Name }}</span>
+                    <span class="status-name">{{ .Status }}</span>
                 </div>
                 {{ end }}
             </div>
+        </div>
+        {{ end }}
+
+        {{ if .Logs }}
+        <div class="logs">
+            {{ range .Logs }}
+            <div class="entry">
+                <span class="level {{ .Level }}">{{ .Level }}</span>
+                <span class="message">{{ .Message }}</span>
+                <span class="fields">
+                    {{ range $key, $val := .Data }}
+                    <span><em>{{ $key }}</em>{{ $val }}</span>
+                    {{ end }}
+                </span>
+                <span class="time" datetime="{{ timestamp .Unix }}"></span>
+            </div>
+            {{ end }}
         </div>
         {{ end }}
     </section>

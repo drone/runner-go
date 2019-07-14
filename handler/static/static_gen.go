@@ -228,8 +228,8 @@ var files = map[string]file{
 		data: file11,
 		FileInfo: &fileInfo{
 			name:    "style.css",
-			size:    8275,
-			modTime: time.Unix(1563076316, 0),
+			size:    8488,
+			modTime: time.Unix(1563131883, 0),
 		},
 	},
 	"/timeago.js": {
@@ -1337,7 +1337,7 @@ a.card {
 .steps .step {
     display: grid;
     grid-gap: 10px 0px;
-    grid-template-columns: 30px auto;
+    grid-template-columns: 30px auto 100px;
     padding: 10px 15px;
 }
 
@@ -1380,6 +1380,16 @@ a.card {
 .steps .step:last-of-type:after,
 .steps .step:first-of-type:before {
     display: none;
+}
+
+.steps .status-name {
+    align-items: center;
+    color: rgba(30,55,90,.6);
+    display: flex;
+    font-size: 14px;
+    font-style: italic;
+    justify-content: flex-end;
+    text-transform: capitalize;
 }
 
 /**

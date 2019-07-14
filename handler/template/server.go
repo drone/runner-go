@@ -103,4 +103,7 @@ var funcMap = map[string]interface{}{
 	"tag": func(s string) string {
 		return strings.TrimPrefix(s, "refs/tags/")
 	},
+	"done": func(s string) bool {
+		return s != "pending" && s != "running"
+	},
 }

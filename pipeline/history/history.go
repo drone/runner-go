@@ -64,6 +64,20 @@ func (h *History) Entries() []*Entry {
 	return entries
 }
 
+// Entry returns the entry by id.
+func (h *History) Entry(id int64) *Entry {
+	h.Lock()
+	defer h.Unlock()
+	for _, src := range h.items {
+		if src.Stage.ID == id {
+			dst := new(Entry)
+			*dst = *src
+			return dst
+		}
+	}
+	return nil
+}
+
 // Limit returns the history limit.
 func (h *History) Limit() int {
 	if h.limit == 0 {

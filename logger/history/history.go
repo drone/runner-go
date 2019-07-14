@@ -85,6 +85,20 @@ func (h *Hook) Entries() []*Entry {
 	return entries
 }
 
+// Filter returns a list of all entries for which the filter
+// function returns true.
+func (h *Hook) Filter(filter func(*Entry) bool) []*Entry {
+	h.RLock()
+	defer h.RUnlock()
+	var entries []*Entry
+	for _, entry := range h.entries {
+		if filter(entry) {
+			entries = append(entries, copyEntry(entry))
+		}
+	}
+	return entries
+}
+
 // helper funtion copies an entry for threadsafe access.
 func copyEntry(src *Entry) *Entry {
 	dst := new(Entry)

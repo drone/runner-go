@@ -116,6 +116,21 @@ func TestEntries(t *testing.T) {
 	}
 }
 
+func TestEntry(t *testing.T) {
+	s1 := &drone.Stage{ID: 1}
+	s2 := &drone.Stage{ID: 2}
+	v := History{}
+	v.items = append(v.items, &Entry{Stage: s1}, &Entry{Stage: s2})
+
+	if got := v.Entry(99); got != nil {
+		t.Errorf("Want nil when stage not found")
+	}
+	if got := v.Entry(s1.ID); got == nil {
+		t.Errorf("Want entry by stage ID, got nil")
+		return
+	}
+}
+
 func TestLimit(t *testing.T) {
 	v := History{}
 	if got, want := v.Limit(), defaultLimit; got != want {

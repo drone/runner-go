@@ -51,18 +51,30 @@ func HandleIndex(t *history.History) http.HandlerFunc {
 
 // HandleStage returns a http.HandlerFunc that displays the
 // stage details.
-func HandleStage(t *history.History) http.HandlerFunc {
+func HandleStage(hist *history.History, logger *hook.Hook) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id, _ := strconv.ParseInt(r.FormValue("id"), 10, 64)
-		for _, e := range t.Entries() {
-			if e.Stage.ID == id {
-				nocache(w)
-				render(w, "stage.tmpl", e)
-				return
-			}
+
+		// filter logs by stage id.
+		logs := logger.Filter(func(entry *hook.Entry) bool {
+			return entry.Data["stage.id"] == id
+		})
+
+		// find pipeline by stage id
+		entry := hist.Entry(id)
+		if entry == nil {
+			w.WriteHeader(404)
+			return
 		}
-		// TODO(bradrydzewski) we need an error template.
-		w.WriteHeader(404)
+
+		nocache(w)
+		render(w, "stage.tmpl", struct {
+			*history.Entry
+			Logs []*hook.Entry
+		}{
+			Entry: entry,
+			Logs:  logs,
+		})
 	}
 }
 
