@@ -24,6 +24,14 @@ type Config struct {
 
 // New returns a new route handler.
 func New(tracer *history.History, history *hook.Hook, config Config) http.Handler {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/healthz", handler.HandleHealth(tracer))
+
+	// omit dashboard handlers when no password configured.
+	if config.Password == "" {
+		return mux
+	}
+
 	// middleware to require basic authentication.
 	auth := basicauth.New(config.Realm, map[string][]string{
 		config.Username: {config.Password},
@@ -32,9 +40,8 @@ func New(tracer *history.History, history *hook.Hook, config Config) http.Handle
 	// handler to serve static assets for the dashboard.
 	fs := http.FileServer(static.New())
 
-	mux := http.NewServeMux()
+	// dashboard handles.
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))
-	mux.HandleFunc("/healthz", handler.HandleHealth(tracer))
 	mux.Handle("/logs", auth(handler.HandleLogHistory(history)))
 	mux.Handle("/view", auth(handler.HandleStage(tracer)))
 	mux.Handle("/", auth(handler.HandleIndex(tracer)))
