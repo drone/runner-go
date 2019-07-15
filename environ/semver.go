@@ -14,12 +14,15 @@ import (
 // helper function returns a list of environment variables
 // that represent the semantic version.
 func versions(s string) map[string]string {
+	env := map[string]string{}
+
 	s = strings.TrimPrefix(s, "v")
 	version, err := semver.NewVersion(s)
 	if err != nil {
-		return nil
+		env["DRONE_SEMVER_ERROR"] = err.Error()
+		return env
 	}
-	env := map[string]string{}
+
 	env["DRONE_SEMVER"] = version.String()
 	env["DRONE_SEMVER_MAJOR"] = fmt.Sprint(version.Major)
 	env["DRONE_SEMVER_MINOR"] = fmt.Sprint(version.Minor)

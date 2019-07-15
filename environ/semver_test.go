@@ -11,9 +11,11 @@ import (
 )
 
 func TestInvalidSemver(t *testing.T) {
-	v := versions("this is an invalid version")
-	if v != nil {
-		t.Errorf("Expect nil variables when invalid semver string")
+	a := versions("this is an invalid version")
+	b := map[string]string{"DRONE_SEMVER_ERROR": "this is an invalid version is not in dotted-tri format"}
+	if diff := cmp.Diff(a, b); diff != "" {
+		t.Errorf("Unexpected semver variables")
+		t.Log(diff)
 	}
 }
 
