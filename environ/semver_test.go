@@ -22,12 +22,12 @@ func TestInvalidSemver(t *testing.T) {
 func TestSemver(t *testing.T) {
 	a := versions("v1.2.3-alpha+001")
 	b := map[string]string{
-		"DRONE_SEMVER":             "1.2.3-alpha+001",
-		"DRONE_SEMVER_MAJOR":       "1",
-		"DRONE_SEMVER_MINOR":       "2",
-		"DRONE_SEMVER_PATCH":       "3",
-		"DRONE_SEMVER_PRE_RELEASE": "alpha",
-		"DRONE_SEMVER_BUILD":       "001",
+		"DRONE_SEMVER":            "1.2.3-alpha+001",
+		"DRONE_SEMVER_MAJOR":      "1",
+		"DRONE_SEMVER_MINOR":      "2",
+		"DRONE_SEMVER_PATCH":      "3",
+		"DRONE_SEMVER_PRERELEASE": "alpha",
+		"DRONE_SEMVER_BUILD":      "001",
 	}
 	if diff := cmp.Diff(a, b); diff != "" {
 		t.Errorf("Unexpected semver variables")

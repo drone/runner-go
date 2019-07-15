@@ -28,7 +28,7 @@ func versions(s string) map[string]string {
 	env["DRONE_SEMVER_MINOR"] = fmt.Sprint(version.Minor)
 	env["DRONE_SEMVER_PATCH"] = fmt.Sprint(version.Patch)
 	if s := string(version.PreRelease); s != "" {
-		env["DRONE_SEMVER_PRE_RELEASE"] = s
+		env["DRONE_SEMVER_PRERELEASE"] = s
 	}
 	if version.Metadata != "" {
 		env["DRONE_SEMVER_BUILD"] = version.Metadata
