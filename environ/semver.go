@@ -33,5 +33,8 @@ func versions(s string) map[string]string {
 	if version.Metadata != "" {
 		env["DRONE_SEMVER_BUILD"] = version.Metadata
 	}
+	version.Metadata = ""
+	version.PreRelease = ""
+	env["DRONE_SEMVER_SHORT"] = version.String()
 	return env
 }

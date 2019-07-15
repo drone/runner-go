@@ -26,6 +26,7 @@ func TestSemver(t *testing.T) {
 		"DRONE_SEMVER_MAJOR":      "1",
 		"DRONE_SEMVER_MINOR":      "2",
 		"DRONE_SEMVER_PATCH":      "3",
+		"DRONE_SEMVER_SHORT":      "1.2.3",
 		"DRONE_SEMVER_PRERELEASE": "alpha",
 		"DRONE_SEMVER_BUILD":      "001",
 	}
