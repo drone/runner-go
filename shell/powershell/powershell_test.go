@@ -39,10 +39,10 @@ func TestScript(t *testing.T) {
 var exampleScript = `
 $erroractionpreference = "stop"
 
-Write-Output ('+ "go build"');
-& go build; if ($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
+echo "+ go build"
+go build
 
-Write-Output ('+ "go test"');
-& go test; if ($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
+echo "+ go test"
+go test
 
 `

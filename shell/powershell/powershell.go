@@ -29,8 +29,8 @@ func Command() (string, []string) {
 func Script(commands []string) string {
 	var buf bytes.Buffer
 	for _, command := range commands {
-		escaped := fmt.Sprintf("%q", command)
-		escaped = strings.Replace(escaped, "$", `\$`, -1)
+		escaped := fmt.Sprintf("%q", "+ "+command)
+		escaped = strings.Replace(escaped, "$", "`$", -1)
 		buf.WriteString(fmt.Sprintf(
 			traceScript,
 			escaped,
@@ -53,6 +53,6 @@ $erroractionpreference = "stop"
 // traceScript is a helper script that is added to
 // the build script to trace a command.
 const traceScript = `
-Write-Output ('+ %s');
-& %s; if ($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
+echo %s
+%s
 `
