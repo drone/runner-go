@@ -30,7 +30,15 @@ func TestCommands(t *testing.T) {
 }
 
 func TestScript(t *testing.T) {
-	got, want := Script([]string{"go build", "go test"}), exampleScript
+	got, want := Script([]string{"go build", "go test"}, nil), exampleScript
+	if got != want {
+		t.Errorf("Want %q, got %q", want, got)
+	}
+}
+
+func TestScriptEnviron(t *testing.T) {
+	env := map[string]string{"GOOS": "linux"}
+	got, want := Script([]string{"go build", "go test"}, env), exampleScriptEnviron
 	if got != want {
 		t.Errorf("Want %q, got %q", want, got)
 	}
@@ -44,5 +52,15 @@ go build
 
 echo "+ go test"
 go test
+`
 
+var exampleScriptEnviron = `
+$Env:GOOS = "linux"
+$erroractionpreference = "stop"
+
+echo "+ go build"
+go build
+
+echo "+ go test"
+go test
 `

@@ -18,6 +18,6 @@ func Command() (string, []string) {
 
 // Script converts a slice of individual shell commands to
 // a powershell script.
-func Script(commands []string) string {
-	return powershell.Script(commands)
+func Script(commands []string, environ map[string]string) string {
+	return powershell.Script(commands, environ)
 }

@@ -25,8 +25,15 @@ func Command() (string, []string) {
 
 // Script converts a slice of individual shell commands to
 // a posix-compliant shell script.
-func Script(commands []string) string {
-	var buf bytes.Buffer
+func Script(commands []string, environ map[string]string) string {
+	buf := new(bytes.Buffer)
+	for k, v := range environ {
+		fmt.Fprintln(buf)
+		fmt.Fprintf(buf, exportScript, k, v)
+	}
+	fmt.Fprintln(buf)
+	fmt.Fprintf(buf, optionScript)
+	fmt.Fprintln(buf)
 	for _, command := range commands {
 		escaped := fmt.Sprintf("%q", command)
 		escaped = strings.Replace(escaped, "$", `\$`, -1)
@@ -36,18 +43,16 @@ func Script(commands []string) string {
 			command,
 		))
 	}
-	return fmt.Sprintf(
-		buildScript,
-		buf.String(),
-	)
+	return buf.String()
 }
 
-// buildScript is a helper script this is added to the build
-// to prepare the environment and execute the build commands.
-const buildScript = `
-set -e
-%s
-`
+// optionScript is a helper script this is added to the build
+// to set shell options, in this case, to exit on error.
+const optionScript = "set -e"
+
+// exportScript is a helper script that is added to
+// the build script to export environment variables.
+const exportScript = "export %s=%q"
 
 // traceScript is a helper script that is added to
 // the build script to trace a command.
