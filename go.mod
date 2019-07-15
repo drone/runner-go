@@ -6,6 +6,7 @@ require (
 	github.com/99designs/basicauth-go v0.0.0-20160802081356-2a93ba0f464d
 	github.com/bmatcuk/doublestar v1.1.1
 	github.com/buildkite/yaml v2.1.0+incompatible
+	github.com/coreos/go-semver v0.3.0
 	github.com/docker/go-units v0.4.0
 	github.com/drone/drone-go v1.0.5-0.20190504210458-4d6116b897ba
 	github.com/drone/signal v1.0.0

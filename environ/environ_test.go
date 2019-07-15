@@ -129,10 +129,22 @@ func TestBuild(t *testing.T) {
 		t.Errorf("Expect non-zero stopped time")
 	}
 
-	v.Ref = "refs/tags/v1.0.0"
+	v.Ref = "refs/tags/v1.2.3"
 	a = Build(v)
-	if a["DRONE_TAG"] != "v1.0.0" {
+	if a["DRONE_TAG"] != "v1.2.3" {
 		t.Errorf("Expect tag extraced from ref")
+	}
+	if a["DRONE_SEMVER"] != "1.2.3" {
+		t.Errorf("Expect semver from ref")
+	}
+	if a["DRONE_SEMVER_MAJOR"] != "1" {
+		t.Errorf("Expect semver major")
+	}
+	if a["DRONE_SEMVER_MINOR"] != "2" {
+		t.Errorf("Expect semver minor")
+	}
+	if a["DRONE_SEMVER_PATCH"] != "3" {
+		t.Errorf("Expect semver patch")
 	}
 }
 

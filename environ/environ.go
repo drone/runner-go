@@ -130,11 +130,13 @@ func Build(build *drone.Build) map[string]string {
 	if build.Finished == 0 {
 		env["DRONE_BUILD_FINISHED"] = fmt.Sprint(time.Now().Unix())
 	}
-	if strings.HasPrefix(build.Ref, "refs/tags/") {
-		env["DRONE_TAG"] = strings.TrimPrefix(build.Ref, "refs/tags/")
-	}
 	if build.Event == drone.EventPullRequest {
 		env["DRONE_PULL_REQUEST"] = re.FindString(build.Ref)
+	}
+	if strings.HasPrefix(build.Ref, "refs/tags/") {
+		tag := strings.TrimPrefix(build.Ref, "refs/tags/")
+		env["DRONE_TAG"] = tag
+		copyenv(versions(tag), env)
 	}
 	return env
 }
@@ -174,6 +176,14 @@ func Slice(env map[string]string) []string {
 	}
 	sort.Strings(s)
 	return s
+}
+
+// copyenv copies environment variables from the source map
+// to the destination map.
+func copyenv(src, dst map[string]string) {
+	for k, v := range src {
+		dst[k] = v
+	}
 }
 
 // helper function returns true of the build is failing.
