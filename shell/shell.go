@@ -4,51 +4,20 @@
 
 // +build !windows
 
-// Package shell provides functions for converting shell commands
-// to shell scripts.
 package shell
 
-import (
-	"bytes"
-	"fmt"
-	"strings"
-)
+import "github.com/drone/runner-go/shell/bash"
 
-// Suffix provides the shell script suffix. For posix systems
-// this value is an empty string.
+// Suffix provides the shell script suffix.
 const Suffix = ""
 
-// Command returns the shell command and arguments.
+// Command returns the powershell command and arguments.
 func Command() (string, []string) {
-	return "/bin/sh", []string{"-e"}
+	return bash.Command()
 }
 
 // Script converts a slice of individual shell commands to
-// a posix-compliant shell script.
+// a powershell script.
 func Script(commands []string) string {
-	buf := new(bytes.Buffer)
-	fmt.Fprintln(buf)
-	fmt.Fprintf(buf, optionScript)
-	fmt.Fprintln(buf)
-	for _, command := range commands {
-		escaped := fmt.Sprintf("%q", command)
-		escaped = strings.Replace(escaped, "$", `\$`, -1)
-		buf.WriteString(fmt.Sprintf(
-			traceScript,
-			escaped,
-			command,
-		))
-	}
-	return buf.String()
+	return bash.Script(commands)
 }
-
-// optionScript is a helper script this is added to the build
-// to set shell options, in this case, to exit on error.
-const optionScript = "set -e"
-
-// traceScript is a helper script that is added to
-// the build script to trace a command.
-const traceScript = `
-echo + %s
-%s
-`
