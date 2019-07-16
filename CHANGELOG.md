@@ -4,7 +4,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Added
 - semver environment variables
-- optional environment variables in scripts
 
 ## [1.1.0] - 2019-07-14
 ### Added
