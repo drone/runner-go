@@ -28,32 +28,13 @@ func TestCommands(t *testing.T) {
 }
 
 func TestScript(t *testing.T) {
-	got, want := Script([]string{"go build", "go test"}, nil), exampleScript
-	if got != want {
-		t.Errorf("Want %q, got %q", want, got)
-	}
-}
-
-func TestScriptEnviron(t *testing.T) {
-	env := map[string]string{"GOOS": "linux"}
-	got, want := Script([]string{"go build", "go test"}, env), exampleScriptEnviron
+	got, want := Script([]string{"go build", "go test"}), exampleScript
 	if got != want {
 		t.Errorf("Want %q, got %q", want, got)
 	}
 }
 
 var exampleScript = `
-set -e
-
-echo + "go build"
-go build
-
-echo + "go test"
-go test
-`
-
-var exampleScriptEnviron = `
-export GOOS="linux"
 set -e
 
 echo + "go build"

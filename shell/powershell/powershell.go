@@ -26,12 +26,8 @@ func Command() (string, []string) {
 
 // Script converts a slice of individual shell commands to
 // a powershell script.
-func Script(commands []string, environ map[string]string) string {
+func Script(commands []string) string {
 	buf := new(bytes.Buffer)
-	for k, v := range environ {
-		fmt.Fprintln(buf)
-		fmt.Fprintf(buf, exportScript, k, v)
-	}
 	fmt.Fprintln(buf)
 	fmt.Fprintf(buf, optionScript)
 	fmt.Fprintln(buf)
@@ -50,10 +46,6 @@ func Script(commands []string, environ map[string]string) string {
 // optionScript is a helper script this is added to the build
 // to set shell options, in this case, to exit on error.
 const optionScript = `$erroractionpreference = "stop"`
-
-// exportScript is a helper script that is added to
-// the build script to export environment variables.
-const exportScript = "$Env:%s = %q"
 
 // traceScript is a helper script that is added to
 // the build script to trace a command.
