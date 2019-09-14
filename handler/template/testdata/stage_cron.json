@@ -1,0 +1,31 @@
+{
+    "Repo": {
+        "Slug": "octocat/hello-world",
+        "Name": "hello-world"
+    },
+    "Build": {
+        "After": "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+        "Event": "cron",
+        "Cron": "nightly",
+        "Source": "master",
+        "Target": "master",
+        "Deploy": "production",
+        "Message": "Merge pull request #6 from Spaceghost/patch-1",
+        "Author": "octocat",
+        "AuthorAvatar": "https://avatars0.githubusercontent.com/u/583231?s=460&v=4",
+        "Parent": 41,
+        "Number": 42
+    },
+    "Stage": {
+        "Name": "test",
+        "Status": "success",
+        "Started": 1563059000,
+        "Created": 1563059000,
+        "Steps": [
+            { "Name": "clone", "Status": "success" },
+            { "Name": "build", "Status": "success" },
+            { "Name": "test", "Status": "success" },
+            { "Name": "deploy", "Status": "success" }
+        ]
+    }
+}

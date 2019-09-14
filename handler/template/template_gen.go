@@ -217,6 +217,10 @@ var stage = `<!DOCTYPE html>
             <span class="desc">{{ .Build.Author }} created reference <em>{{ tag .Build.Ref }}</em></span>
             {{ else if eq .Build.Event "promote"}}
             <span class="desc">{{ .Build.Author }} promoted build <em>#{{ .Build.Parent }}</em> to <em>{{ .Build.Deploy }}</em></span>
+            {{ else if eq .Build.Event "rollback"}}
+            <span class="desc">{{ .Build.Author }} reverted <em>{{ .Build.Deploy }}</em> to <em>#{{ .Build.Parent }}</em></span>
+            {{ else if eq .Build.Event "cron"}}
+            <span class="desc">Executed <em>{{ .Build.Cron }}</em> for branch <em>{{ .Build.Target }}</em></span>
             {{ else }}
             <span class="desc">{{ .Build.Author }} pushed <em>{{ sha .Build.After }}</em> to <em>{{ .Build.Target }}</em></span>
             {{ end }}
