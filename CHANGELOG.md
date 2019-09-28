@@ -1,6 +1,15 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.2] - 2019-09-28
+### Fixed
+- powershell scripts should check last exit code
+
+### Added
+- support for cron events in the dashboard screen
+- support for promote events in the dashboard screen
+- support for rollback events in the dashboard screen
+
 ## [1.2.1] - 2019-07-27
 ### Fixed
 - close and already closed channel in livelog causes panic
