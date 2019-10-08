@@ -28,6 +28,12 @@ type (
 		GetName() string
 	}
 
+	// ConcurrentResource is a resource with concurrency limits.
+	ConcurrentResource interface {
+		Resource
+		GetConcurrency() Concurrency
+	}
+
 	// DependantResource is a resoure with runtime dependencies.
 	DependantResource interface {
 		Resource
