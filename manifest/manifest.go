@@ -34,19 +34,26 @@ type (
 		GetConcurrency() Concurrency
 	}
 
-	// DependantResource is a resoure with runtime dependencies.
+	// DependantResource is a resource with runtime dependencies.
 	DependantResource interface {
 		Resource
 		GetDependsOn() []string
 	}
 
-	// PlatformResource is a resoure with platform requirements.
+	// PlatformResource is a resource with platform requirements.
 	PlatformResource interface {
 		Resource
 		GetPlatform() Platform
 	}
 
-	// TriggeredResource is a resoure with trigger rules.
+	// RoutedResource is a resource that can be routed to
+	// specific build nodes.
+	RoutedResource interface {
+		Resource
+		GetNodes() map[string]string
+	}
+
+	// TriggeredResource is a resource with trigger rules.
 	TriggeredResource interface {
 		Resource
 		GetTrigger() Conditions
@@ -55,12 +62,14 @@ type (
 	// RawResource is a raw encoded resource with the common
 	// metadata extracted.
 	RawResource struct {
-		Version  string
-		Kind     string
-		Type     string
-		Name     string
-		Deps     []string `yaml:"depends_on"`
-		Platform Platform
-		Data     []byte `yaml:"-"`
+		Version     string
+		Kind        string
+		Type        string
+		Name        string
+		Deps        []string `yaml:"depends_on"`
+		Node        map[string]string
+		Concurrency Concurrency
+		Platform    Platform
+		Data        []byte `yaml:"-"`
 	}
 )
