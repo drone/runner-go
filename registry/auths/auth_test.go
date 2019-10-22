@@ -5,6 +5,8 @@
 package auths
 
 import (
+	"bytes"
+	"encoding/base64"
 	"os"
 	"testing"
 
@@ -98,6 +100,21 @@ func TestDecodeInvalid(t *testing.T) {
 	username, password := decode("b2N0b2NhdDp==")
 	if username != "" || password != "" {
 		t.Errorf("Expect decoding error")
+	}
+}
+
+func TestEncode(t *testing.T) {
+	username := "octocat"
+	password := "correct-horse-battery-staple"
+	result := Encode(username, password)
+	got, err := base64.URLEncoding.DecodeString(result)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	want := []byte(`{"username":"octocat","password":"correct-horse-battery-staple"}`)
+	if bytes.Equal(got, want) == false {
+		t.Errorf("Could not decode credential header")
 	}
 }
 
