@@ -287,6 +287,7 @@ func (s *State) failAll(err error) {
 		s.Stage.Status = drone.StatusError
 		s.Stage.Error = err.Error()
 		s.Stage.Stopped = time.Now().Unix()
+		s.Stage.ExitCode = 255
 		if s.Stage.Started == 0 {
 			s.Stage.Started = s.Stage.Stopped
 		}
@@ -327,6 +328,8 @@ func (s *State) update() {
 			s.Build.Status = drone.StatusKilled
 			return
 		case drone.StatusError:
+			s.Stage.Error = v.Error
+			s.Stage.ExitCode = 255
 			s.Stage.Status = drone.StatusError
 			s.Build.Status = drone.StatusError
 			return
