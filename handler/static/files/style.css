@@ -107,6 +107,9 @@ a.card {
     font-size: 18px;
     grid-row: 1;
     grid-column: 2 / span 3;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .stage .desc {
