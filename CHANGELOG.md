@@ -1,6 +1,19 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Latest
+### Fixed
+- text overflow for long commit messages
+- error in step should bubble up to stage
+
+### Added
+- support for legacy CI_ environment variables
+- support for registry plugins
+- support for concurrency limits in yaml
+- support for nodes in yaml
+- helpers for working with docker auth config files
+- helpers for tagging containers with labels
+
 ## [1.2.2] - 2019-09-28
 ### Fixed
 - powershell scripts should check last exit code

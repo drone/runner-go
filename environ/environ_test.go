@@ -42,6 +42,13 @@ func TestRepo(t *testing.T) {
 		"DRONE_GIT_SSH_URL":     "git@github.com:octocat/hello-world",
 		"DRONE_REPO_VISIBILITY": "internal",
 		"DRONE_REPO_PRIVATE":    "true",
+
+		"CI_REMOTE_URL":   "https://github.com/octocat/hello-world.git",
+		"CI_REPO":         "octocat/hello-world",
+		"CI_REPO_LINK":    "https://github.com/octocat/hello-world",
+		"CI_REPO_NAME":    "octocat/hello-world",
+		"CI_REPO_PRIVATE": "true",
+		"CI_REPO_REMOTE":  "https://github.com/octocat/hello-world.git",
 	}
 	if diff := cmp.Diff(a, b); diff != "" {
 		t.Fail()
@@ -113,6 +120,24 @@ func TestBuild(t *testing.T) {
 		"DRONE_PULL_REQUEST":         "32",
 		"DRONE_SOURCE_BRANCH":        "develop",
 		"DRONE_TARGET_BRANCH":        "master",
+
+		"CI_BUILD_CREATED":        "1561421740",
+		"CI_BUILD_EVENT":          "pull_request",
+		"CI_BUILD_FINISHED":       "1561421753",
+		"CI_BUILD_LINK":           "https://github.com/octocat/Hello-World/commit/762941318ee16e59dabbacb1b4049eec22f0d303",
+		"CI_BUILD_NUMBER":         "1",
+		"CI_BUILD_STARTED":        "1561421746",
+		"CI_BUILD_STATUS":         "failure",
+		"CI_BUILD_TARGET":         "prod",
+		"CI_COMMIT_AUTHOR":        "octocat",
+		"CI_COMMIT_AUTHOR_AVATAR": "https://avatars0.githubusercontent.com/u/583231",
+		"CI_COMMIT_AUTHOR_EMAIL":  "octocat@github.com",
+		"CI_COMMIT_AUTHOR_NAME":   "The Octocat",
+		"CI_COMMIT_BRANCH":        "master",
+		"CI_COMMIT_MESSAGE":       "updated README",
+		"CI_COMMIT_REF":           "refs/pull/32/head",
+		"CI_COMMIT_SHA":           "762941318ee16e59dabbacb1b4049eec22f0d303",
+		"CI_PARENT_BUILD_NUMBER":  "2",
 	}
 	if diff := cmp.Diff(a, b); diff != "" {
 		t.Fail()
