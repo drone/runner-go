@@ -41,9 +41,9 @@ $erroractionpreference = "stop"
 
 echo "+ go build"
 go build
-if ($LastExitCode -ne 0) { exit $LastExitCode }
+if ($LastExitCode -gt 0) { exit $LastExitCode }
 
 echo "+ go test"
 go test
-if ($LastExitCode -ne 0) { exit $LastExitCode }
+if ($LastExitCode -gt 0) { exit $LastExitCode }
 `

@@ -52,5 +52,5 @@ const optionScript = `$erroractionpreference = "stop"`
 const traceScript = `
 echo %s
 %s
-if ($LastExitCode -ne 0) { exit $LastExitCode }
+if ($LastExitCode -gt 0) { exit $LastExitCode }
 `
