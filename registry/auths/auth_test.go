@@ -103,10 +103,10 @@ func TestDecodeInvalid(t *testing.T) {
 	}
 }
 
-func TestEncode(t *testing.T) {
+func TestHeader(t *testing.T) {
 	username := "octocat"
 	password := "correct-horse-battery-staple"
-	result := Encode(username, password)
+	result := Header(username, password)
 	got, err := base64.URLEncoding.DecodeString(result)
 	if err != nil {
 		t.Error(err)

@@ -16,13 +16,18 @@ import (
 	"github.com/drone/drone-go/drone"
 )
 
-// config represents the Docker client configuration,
-// typically located at ~/.docker/config.json
-type config struct {
-	Auths map[string]struct {
+type (
+	// config represents the Docker client configuration,
+	// typically located at ~/.docker/config.json
+	config struct {
+		Auths map[string]auth `json:"auths"`
+	}
+
+	// auth stores the registry authentication string.
+	auth struct {
 		Auth string `json:"auth"`
-	} `json:"auths"`
-}
+	}
+)
 
 // Parse parses the registry credential from the reader.
 func Parse(r io.Reader) ([]*drone.Registry, error) {
@@ -63,10 +68,10 @@ func ParseBytes(b []byte) ([]*drone.Registry, error) {
 	return Parse(bytes.NewReader(b))
 }
 
-// Encode returns the json marshaled, base64 encoded
+// Header returns the json marshaled, base64 encoded
 // credential string that can be passed to the docker
 // registry authentication header.
-func Encode(username, password string) string {
+func Header(username, password string) string {
 	v := struct {
 		Username string `json:"username,omitempty"`
 		Password string `json:"password,omitempty"`
