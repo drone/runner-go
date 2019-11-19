@@ -34,7 +34,7 @@ func System(system *drone.System) map[string]string {
 }
 
 // Repo returns a set of environment variables containing
-// repostiory metadata.
+// repository metadata.
 func Repo(repo *drone.Repo) map[string]string {
 	return map[string]string{
 		"DRONE_REPO":            repo.Slug,

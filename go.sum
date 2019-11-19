@@ -14,6 +14,11 @@ github.com/docker/go-units v0.4.0 h1:3uh0PgVws3nIA0Q+MwDC8yjEPf9zjRfZZWXZYDct3Tw
 github.com/docker/go-units v0.4.0/go.mod h1:fgPhTUdO+D/Jk86RDLlptpiXQzgHJF7gydDDbaIK4Dk=
 github.com/drone/drone-go v1.0.5-0.20190504210458-4d6116b897ba h1:GKiT4UPBligLXJAP1zRllHvTUygAAlgS3t9LM9aasp0=
 github.com/drone/drone-go v1.0.5-0.20190504210458-4d6116b897ba/go.mod h1:GxyeGClYohaKNYJv/ZpsmVHtMJ7WhoT+uDaJNcDIrk4=
+github.com/drone/drone-go v1.1.0 h1:2mritc5b7PhQWvILNyzaImZMRWVbMmmZ5Q0UDwwO7SI=
+github.com/drone/drone-go v1.1.1-0.20191116205420-0558dc8f86d4 h1:3Oh/CK+UmQOJAsTdl/aLT+oUSZI5CbQgeSZjhlQ6qeY=
+github.com/drone/drone-go v1.1.1-0.20191116205420-0558dc8f86d4/go.mod h1:GxyeGClYohaKNYJv/ZpsmVHtMJ7WhoT+uDaJNcDIrk4=
+github.com/drone/drone-go v1.1.1-0.20191119212130-1d2e07e87e79 h1:jW+dJ8HrZ1CbazlsYoriOOCQnVJ2NkfNczLHs6UMU6I=
+github.com/drone/drone-go v1.1.1-0.20191119212130-1d2e07e87e79/go.mod h1:GxyeGClYohaKNYJv/ZpsmVHtMJ7WhoT+uDaJNcDIrk4=
 github.com/google/go-cmp v0.2.0/go.mod h1:oXzfMopK8JAjlY9xF4vHSVASa0yLyX7SntLO5aqRK0M=
 github.com/google/go-cmp v0.3.0 h1:crn/baboCvb5fXaQ0IJ1SGTsTVrWpDsCWC8EGETZijY=
 github.com/google/go-cmp v0.3.0/go.mod h1:8QqcDgzrUqlUb/G2PQTWiueGozuR1884gddMywk6iLU=
