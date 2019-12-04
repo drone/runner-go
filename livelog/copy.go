@@ -18,9 +18,6 @@ func Copy(dst io.Writer, src io.ReadCloser) error {
 		if _, err := dst.Write(bytes); err != nil {
 			return err
 		}
-		if flusher, ok := dst.(Flusher); ok {
-			flusher.Flush()
-		}
 		if err != nil {
 			if err != io.EOF {
 				return err
@@ -28,11 +25,4 @@ func Copy(dst io.Writer, src io.ReadCloser) error {
 			return nil
 		}
 	}
-}
-
-// The Flusher interface is implemented by an io.Writer that
-// flushes buffered data to the client.
-type Flusher interface {
-	// Flush sends any buffered data to the client.
-	Flush() error
 }
