@@ -13,7 +13,7 @@ type (
 		Secret string `json:"from_secret,omitempty" yaml:"from_secret"`
 	}
 
-	// variable is a tempoary type used to unmarshal
+	// variable is a temporary type used to unmarshal
 	// variables with references to secrets.
 	variable struct {
 		Value  string
