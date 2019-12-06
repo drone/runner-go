@@ -13,7 +13,7 @@ import (
 
 	"github.com/drone/drone-go/drone"
 	hook "github.com/drone/runner-go/logger/history"
-	"github.com/drone/runner-go/pipeline/history"
+	"github.com/drone/runner-go/pipeline/reporter/history"
 )
 
 // HandleHealth returns a http.HandlerFunc that returns a 200

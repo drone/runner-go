@@ -10,7 +10,7 @@ import (
 	"github.com/drone/runner-go/handler"
 	"github.com/drone/runner-go/handler/static"
 	hook "github.com/drone/runner-go/logger/history"
-	"github.com/drone/runner-go/pipeline/history"
+	"github.com/drone/runner-go/pipeline/reporter/history"
 
 	"github.com/99designs/basicauth-go"
 )

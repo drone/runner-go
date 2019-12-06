@@ -10,6 +10,7 @@ import (
 	"context"
 	"sync"
 
+	"github.com/drone/drone-go/drone"
 	"github.com/drone/runner-go/client"
 	"github.com/drone/runner-go/logger"
 )
@@ -21,7 +22,11 @@ var noContext = context.Background()
 type Poller struct {
 	Client client.Client
 	Filter *client.Filter
-	Runner Runner
+
+	// Dispatch is dispatches the resource for processing.
+	// It is invoked by the poller when a resource is
+	// received by the remote system.
+	Dispatch func(context.Context, *drone.Stage) error
 }
 
 // Poll opens N connections to the server to poll for pending
@@ -71,6 +76,6 @@ func (p *Poller) poll(ctx context.Context, thread int) error {
 		return nil
 	}
 
-	return p.Runner.Run(
+	return p.Dispatch(
 		logger.WithContext(noContext, log), stage)
 }
