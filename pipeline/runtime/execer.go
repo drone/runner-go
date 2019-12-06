@@ -18,6 +18,7 @@ import (
 	"golang.org/x/sync/semaphore"
 )
 
+// Execer executes the pipeline.
 type Execer struct {
 	mu       sync.Mutex
 	engine   Engine
@@ -26,7 +27,7 @@ type Execer struct {
 	sem      *semaphore.Weighted
 }
 
-// NewExecer returns a new execer used
+// NewExecer returns a new execer.
 func NewExecer(
 	reporter pipeline.Reporter,
 	streamer pipeline.Streamer,

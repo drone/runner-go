@@ -2,4 +2,22 @@
 // Use of this source code is governed by the Polyform License
 // that can be found in the LICENSE file.
 
-package runtime
+package poller
+
+import "testing"
+
+func TestPoll(t *testing.T) {
+	t.Skip()
+}
+
+func TestPoll_NilStage(t *testing.T) {
+	t.Skip()
+}
+
+func TestPoll_EmptyStage(t *testing.T) {
+	t.Skip()
+}
+
+func TestPoll_RequestError(t *testing.T) {
+	t.Skip()
+}

@@ -3,3 +3,33 @@
 // that can be found in the LICENSE file.
 
 package runtime
+
+import "testing"
+
+func TestExec(t *testing.T) {
+	t.Skip()
+}
+
+func TestExec_NonZeroExit(t *testing.T) {
+	t.Skip()
+}
+
+func TestExec_Exit78(t *testing.T) {
+	t.Skip()
+}
+
+func TestExec_Error(t *testing.T) {
+	t.Skip()
+}
+
+func TestExec_CtxError(t *testing.T) {
+	t.Skip()
+}
+
+func TestExec_ReportError(t *testing.T) {
+	t.Skip()
+}
+
+func TestExec_SkipCtxDone(t *testing.T) {
+	t.Skip()
+}
