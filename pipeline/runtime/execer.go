@@ -228,8 +228,8 @@ func findStep(state *pipeline.State, name string) *drone.Step {
 // pipeline step.
 func secretSlice(step Step) []Secret {
 	var secrets []Secret
-	for i := 0; i < step.SecretLen(); i++ {
-		secrets = append(secrets, step.SecretAt(i))
+	for i := 0; i < step.GetSecretLen(); i++ {
+		secrets = append(secrets, step.GetSecretAt(i))
 	}
 	return secrets
 }

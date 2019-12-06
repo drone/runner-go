@@ -57,18 +57,10 @@ type (
 
 		// GetSecretAt returns the secret at the specified
 		// index.
-		SecretAt(int) Secret
+		GetSecretAt(int) Secret
 
 		// GetSecretLen returns the number of secrets.
-		SecretLen() int
-
-		// IsRunOnFailure returns true if the step should
-		// executed if the pipeline state is failing.
-		IsRunOnFailure() bool
-
-		// IsRunOnSuccess returns true if the step should
-		// executed if the pipeline state is passing.
-		IsRunOnSuccess() bool
+		GetSecretLen() int
 
 		// IsDetached returns true if the step is detached
 		// and executed in the background.
