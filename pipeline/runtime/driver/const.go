@@ -2,7 +2,7 @@
 // Use of this source code is governed by the Polyform License
 // that can be found in the LICENSE file.
 
-package runtime
+package driver
 
 import (
 	"bytes"

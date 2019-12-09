@@ -12,6 +12,8 @@ import (
 	"github.com/drone/runner-go/environ"
 	"github.com/drone/runner-go/logger"
 	"github.com/drone/runner-go/pipeline"
+	"github.com/drone/runner-go/pipeline/runtime/driver"
+	"github.com/drone/runner-go/pipeline/runtime/internal/replacer"
 
 	"github.com/hashicorp/go-multierror"
 	"github.com/natessilva/dag"
@@ -21,7 +23,7 @@ import (
 // Execer executes the pipeline.
 type Execer struct {
 	mu       sync.Mutex
-	engine   Engine
+	engine   driver.Engine
 	reporter pipeline.Reporter
 	streamer pipeline.Streamer
 	sem      *semaphore.Weighted
@@ -31,7 +33,7 @@ type Execer struct {
 func NewExecer(
 	reporter pipeline.Reporter,
 	streamer pipeline.Streamer,
-	engine Engine,
+	engine driver.Engine,
 	threads int64,
 ) *Execer {
 	exec := &Execer{
@@ -49,7 +51,7 @@ func NewExecer(
 
 // Exec executes the intermediate representation of the pipeline
 // and returns an error if execution fails.
-func (e *Execer) Exec(ctx context.Context, spec Spec, state *pipeline.State) error {
+func (e *Execer) Exec(ctx context.Context, spec driver.Spec, state *pipeline.State) error {
 	defer e.engine.Destroy(noContext, spec)
 
 	if err := e.engine.Setup(noContext, spec); err != nil {
@@ -90,7 +92,7 @@ func (e *Execer) Exec(ctx context.Context, spec Spec, state *pipeline.State) err
 	return result
 }
 
-func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, step Step) error {
+func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec driver.Spec, step driver.Step) error {
 	var result error
 
 	select {
@@ -129,14 +131,14 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 		return nil
 	case state.Cancelled():
 		return nil
-	case step.GetRunPolicy() == RunNever:
+	case step.GetRunPolicy() == driver.RunNever:
 		return nil
-	case step.GetRunPolicy() == RunAlways:
+	case step.GetRunPolicy() == driver.RunAlways:
 		break
-	case step.GetRunPolicy() == RunOnFailure && state.Failed() == false:
+	case step.GetRunPolicy() == driver.RunOnFailure && state.Failed() == false:
 		state.Skip(step.GetName())
 		return e.reporter.ReportStep(noContext, state, step.GetName())
-	case step.GetRunPolicy() == RunOnSuccess && state.Failed():
+	case step.GetRunPolicy() == driver.RunOnSuccess && state.Failed():
 		state.Skip(step.GetName())
 		return e.reporter.ReportStep(noContext, state, step.GetName())
 	}
@@ -164,7 +166,7 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 
 	// writer used to stream build logs.
 	wc := e.streamer.Stream(noContext, state, step.GetName())
-	wc = newReplacer(wc, secretSlice(step))
+	wc = replacer.New(wc, secretSlice(step))
 
 	// if the step is configured as a daemon, it is detached
 	// from the main process and executed separately.
@@ -226,8 +228,8 @@ func findStep(state *pipeline.State, name string) *drone.Step {
 
 // helper function returns an array of secrets from the
 // pipeline step.
-func secretSlice(step Step) []Secret {
-	var secrets []Secret
+func secretSlice(step driver.Step) []driver.Secret {
+	var secrets []driver.Secret
 	for i := 0; i < step.GetSecretLen(); i++ {
 		secrets = append(secrets, step.GetSecretAt(i))
 	}
