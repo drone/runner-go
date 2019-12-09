@@ -2,9 +2,7 @@
 // Use of this source code is governed by the Polyform License
 // that can be found in the LICENSE file.
 
-// Package driver defines interfaces to be implemented by
-// pipeline drivers as used by package runtime.
-package driver
+package runtime
 
 import (
 	"context"

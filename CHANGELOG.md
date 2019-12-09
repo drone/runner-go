@@ -3,8 +3,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Added
+
+## [1.5.0] - 2019-12-09
 - support for global environment variables
 - support for external environment variables from an external service
+- abstraction for pipeline execution
 
 ## [1.4.0] - 2019-11-05
 ### Added

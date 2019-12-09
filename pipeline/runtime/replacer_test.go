@@ -2,25 +2,23 @@
 // Use of this source code is governed by the Polyform License
 // that can be found in the LICENSE file.
 
-package replacer
+package runtime
 
 import (
 	"bytes"
 	"io"
 	"testing"
-
-	"github.com/drone/runner-go/pipeline/runtime/driver"
 )
 
 func TestReplace(t *testing.T) {
-	secrets := []driver.Secret{
-		&secret{Name: "DOCKER_USERNAME", Data: "octocat", Mask: false},
-		&secret{Name: "DOCKER_PASSWORD", Data: "correct-horse-batter-staple", Mask: true},
-		&secret{Name: "DOCKER_EMAIL", Data: "", Mask: true},
+	secrets := []Secret{
+		&mockSecret{Name: "DOCKER_USERNAME", Data: "octocat", Mask: false},
+		&mockSecret{Name: "DOCKER_PASSWORD", Data: "correct-horse-batter-staple", Mask: true},
+		&mockSecret{Name: "DOCKER_EMAIL", Data: "", Mask: true},
 	}
 
 	buf := new(bytes.Buffer)
-	w := New(&nopCloser{buf}, secrets)
+	w := newReplacer(&nopCloser{buf}, secrets)
 	w.Write([]byte("username octocat password correct-horse-batter-staple"))
 	w.Close()
 
@@ -32,14 +30,14 @@ func TestReplace(t *testing.T) {
 // this test verifies that if there are no secrets to scan and
 // mask, the io.WriteCloser is returned as-is.
 func TestReplaceNone(t *testing.T) {
-	secrets := []driver.Secret{
-		&secret{Name: "DOCKER_USERNAME", Data: "octocat", Mask: false},
-		&secret{Name: "DOCKER_PASSWORD", Data: "correct-horse-batter-staple", Mask: false},
+	secrets := []Secret{
+		&mockSecret{Name: "DOCKER_USERNAME", Data: "octocat", Mask: false},
+		&mockSecret{Name: "DOCKER_PASSWORD", Data: "correct-horse-batter-staple", Mask: false},
 	}
 
 	buf := new(bytes.Buffer)
 	w := &nopCloser{buf}
-	r := New(w, secrets)
+	r := newReplacer(w, secrets)
 	if w != r {
 		t.Errorf("Expect buffer returned with no replacer")
 	}
@@ -53,12 +51,12 @@ func (*nopCloser) Close() error {
 	return nil
 }
 
-type secret struct {
+type mockSecret struct {
 	Name string
 	Data string
 	Mask bool
 }
 
-func (s *secret) GetName() string  { return s.Name }
-func (s *secret) GetValue() string { return s.Data }
-func (s *secret) IsMasked() bool   { return s.Mask }
+func (s *mockSecret) GetName() string  { return s.Name }
+func (s *mockSecret) GetValue() string { return s.Data }
+func (s *mockSecret) IsMasked() bool   { return s.Mask }

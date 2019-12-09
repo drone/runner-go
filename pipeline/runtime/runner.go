@@ -16,7 +16,6 @@ import (
 	"github.com/drone/runner-go/logger"
 	"github.com/drone/runner-go/manifest"
 	"github.com/drone/runner-go/pipeline"
-	"github.com/drone/runner-go/pipeline/runtime/driver"
 	"github.com/drone/runner-go/secret"
 
 	"github.com/drone/drone-go/drone"
@@ -37,7 +36,7 @@ type Runner struct {
 
 	// Compiler is responsible for compiling the pipeline
 	// configuration to the intermediate representation.
-	Compiler driver.Compiler
+	Compiler Compiler
 
 	// Reporter reports pipeline status and logs back to the
 	// remote server.
@@ -45,7 +44,7 @@ type Runner struct {
 
 	// Execer is responsible for executing intermediate
 	// representation of the pipeline and returns its results.
-	Exec func(context.Context, driver.Spec, *pipeline.State) error
+	Exec func(context.Context, Spec, *pipeline.State) error
 
 	// Lint is responsible for linting the pipeline
 	// and failing if any rules are broken.
@@ -202,7 +201,7 @@ func (s *Runner) Run(ctx context.Context, stage *drone.Stage) error {
 
 	// compile the yaml configuration file to an intermediate
 	// representation, and then
-	args := driver.CompilerArgs{
+	args := CompilerArgs{
 		Pipeline: resource,
 		Manifest: manifest,
 		Build:    data.Build,
@@ -219,7 +218,7 @@ func (s *Runner) Run(ctx context.Context, stage *drone.Stage) error {
 
 		// steps that are skipped are ignored and are not stored
 		// in the drone database, nor displayed in the UI.
-		if src.GetRunPolicy() == driver.RunNever {
+		if src.GetRunPolicy() == RunNever {
 			continue
 		}
 		stage.Steps = append(stage.Steps, &drone.Step{
@@ -227,7 +226,7 @@ func (s *Runner) Run(ctx context.Context, stage *drone.Stage) error {
 			Number:    len(stage.Steps) + 1,
 			StageID:   stage.ID,
 			Status:    drone.StatusPending,
-			ErrIgnore: src.GetErrPolicy() == driver.ErrIgnore,
+			ErrIgnore: src.GetErrPolicy() == ErrIgnore,
 		})
 	}
 
