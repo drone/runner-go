@@ -39,6 +39,7 @@ func New(base pipeline.Reporter) *History {
 func (h *History) ReportStage(ctx context.Context, state *pipeline.State) error {
 	h.Lock()
 	h.update(state)
+	h.prune()
 	h.Unlock()
 	return h.base.ReportStage(ctx, state)
 }
@@ -47,6 +48,7 @@ func (h *History) ReportStage(ctx context.Context, state *pipeline.State) error 
 func (h *History) ReportStep(ctx context.Context, state *pipeline.State, name string) error {
 	h.Lock()
 	h.update(state)
+	h.prune()
 	h.Unlock()
 	return h.base.ReportStep(ctx, state, name)
 }
