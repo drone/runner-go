@@ -12,6 +12,19 @@ import (
 	"github.com/drone/runner-go/logger"
 )
 
+// MultiExternal returns a new environment provider that
+// is comprised of multiple external providers, and
+// aggregates their results.
+func MultiExternal(endpoints []string, token string, insecure bool) Provider {
+	var sources []Provider
+	for _, endpoint := range endpoints {
+		sources = append(sources, External(
+			endpoint, token, insecure,
+		))
+	}
+	return Combine(sources...)
+}
+
 // External returns a new external environment variable
 // provider. This provider makes an external API call to
 // list and return environment variables.

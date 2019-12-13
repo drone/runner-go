@@ -2,10 +2,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
-### [1.5.1] - 2019-12-10
+### Added
+- support for multiple external environment providers
+
+## [1.5.1] - 2019-12-10
+### Fixed
 - not trimming pipeline history causing memory leak
 
 ## [1.5.0] - 2019-12-09
+### Added
 - support for global environment variables
 - support for external environment variables from an external service
 - abstraction for pipeline execution

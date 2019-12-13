@@ -80,6 +80,16 @@ func TestExternal_NotFound(t *testing.T) {
 	}
 }
 
+// This test verifies that multiple external providers
+// are combined into a single provider that concatenates
+// the results.
+func TestMultiExternal(t *testing.T) {
+	provider := MultiExternal([]string{"https://foo", "https://bar"}, "correct-horse-batter-staple", true).(*combined)
+	if len(provider.sources) != 2 {
+		t.Errorf("Expect two provider sources")
+	}
+}
+
 type mockPlugin struct {
 	out map[string]string
 	err error
