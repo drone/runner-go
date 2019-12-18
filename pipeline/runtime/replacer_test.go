@@ -27,6 +27,35 @@ func TestReplace(t *testing.T) {
 	}
 }
 
+func TestReplaceMultiline(t *testing.T) {
+	key := `
+-----BEGIN PRIVATE KEY-----
+MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEA0SC5BIYpanOv6wSm
+dHVVMRa+6iw/0aJpT9/LKcZ0XYQ43P9Vwn8c46MDvFJ+Uy41FwbxT+QpXBoLlp8D
+sJY/dQIDAQABAkAesoL2GwtxSNIF2YTli2OZ9RDJJv2nNAPpaZxU4YCrST1AXGPB
+tFm0LjYDDlGJ448syKRpdypAyCR2LidwrVRxAiEA+YU5Zv7bOwODCsmtQtIfBfhu
+6SMBGMDijK7OYfTtjQsCIQDWjvly6b6doVMdNjqqTsnA8J1ShjSb8bFXkMels941
+fwIhAL4Rr7I3PMRtXmrfSa325U7k+Yd59KHofCpyFiAkNLgVAiB8JdR+wnOSQAOY
+loVRgC9LXa6aTp9oUGxeD58F6VK9PwIhAIDhSxkrIatXw+dxelt8DY0bEdDbYzky
+r9nicR5wDy2W
+-----END PRIVATE KEY-----`
+
+	line := `> MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEA0SC5BIYpanOv6wSm`
+
+	secrets := []Secret{
+		&mockSecret{Name: "SSH_KEY", Data: key, Mask: true},
+	}
+
+	buf := new(bytes.Buffer)
+	w := newReplacer(&nopCloser{buf}, secrets)
+	w.Write([]byte(line))
+	w.Close()
+
+	if got, want := buf.String(), "> ******"; got != want {
+		t.Errorf("Want masked string %s, got %s", want, got)
+	}
+}
+
 // this test verifies that if there are no secrets to scan and
 // mask, the io.WriteCloser is returned as-is.
 func TestReplaceNone(t *testing.T) {

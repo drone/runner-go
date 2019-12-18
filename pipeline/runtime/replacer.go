@@ -9,8 +9,6 @@ import (
 	"strings"
 )
 
-const maskedF = "[secret:%s]"
-
 // replacer is an io.Writer that finds and masks sensitive data.
 type replacer struct {
 	w io.WriteCloser
@@ -21,18 +19,22 @@ type replacer struct {
 func newReplacer(w io.WriteCloser, secrets []Secret) io.WriteCloser {
 	var oldnew []string
 	for _, secret := range secrets {
-		if len(secret.GetValue()) == 0 || secret.IsMasked() == false {
+		v := secret.GetValue()
+		if len(v) == 0 || secret.IsMasked() == false {
 			continue
 		}
-		// name := strings.ToLower(secret.GetName())
-		// masked := fmt.Sprintf(maskedF, name)
 
-		// TODO temporarily revert back to masking secrets
-		// using the asterisk symbol due to confusion when
-		// masking with [secret:name]
-		masked := "******"
-		oldnew = append(oldnew, string(secret.GetValue()))
-		oldnew = append(oldnew, masked)
+		for _, part := range strings.Split(v, "\n") {
+			part = strings.TrimSpace(part)
+
+			if len(part) == 0 {
+				continue
+			}
+
+			masked := "******"
+			oldnew = append(oldnew, part)
+			oldnew = append(oldnew, masked)
+		}
 	}
 	if len(oldnew) == 0 {
 		return w
