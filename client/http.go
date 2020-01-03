@@ -199,9 +199,9 @@ func (p *HTTPClient) Upload(ctx context.Context, step int64, lines []*drone.Line
 	return err
 }
 
-func (p *HTTPClient) retry(ctx context.Context, method, path string, in, out interface{}) (*http.Response, error) {
+func (p *HTTPClient) retry(ctx context.Context, path, method string, in, out interface{}) (*http.Response, error) {
 	for {
-		res, err := p.do(ctx, method, path, in, out)
+		res, err := p.do(ctx, path, method, in, out)
 		// do not retry on Canceled or DeadlineExceeded
 		if err := ctx.Err(); err != nil {
 			p.logger().Tracef("http: context canceled")
