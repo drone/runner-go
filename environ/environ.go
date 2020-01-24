@@ -129,6 +129,7 @@ func Build(build *drone.Build) map[string]string {
 		"DRONE_BUILD_STARTED":        fmt.Sprint(build.Started),
 		"DRONE_BUILD_FINISHED":       fmt.Sprint(build.Finished),
 		"DRONE_DEPLOY_TO":            build.Deploy,
+		"DRONE_DEPLOY_ID":            fmt.Sprint(build.DeployID),
 
 		// these are legacy configuration parameters for backward
 		// compatibility with drone 0.8. These are deprecated and
