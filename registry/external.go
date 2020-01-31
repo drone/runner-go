@@ -60,7 +60,12 @@ func (p *external) List(ctx context.Context, in *Request) ([]*drone.Registry, er
 		return nil, nil
 	}
 
-	logger.Trace("registry: external: credential list returned")
+	for _, v := range res {
+		logger.
+			WithField("address", v.Address).
+			WithField("username", v.Username).
+			Trace("registry: external: received credentials")
+	}
 
 	return res, nil
 }
