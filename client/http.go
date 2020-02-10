@@ -11,6 +11,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -267,7 +268,12 @@ func (p *HTTPClient) do(ctx context.Context, path, method string, in, out interf
 
 	res, err := p.client().Do(req)
 	if res != nil {
-		defer res.Body.Close()
+		defer func() {
+			// drain the response body so we can reuse
+			// this connection.
+			io.Copy(ioutil.Discard, io.LimitReader(res.Body, 4096))
+			res.Body.Close()
+		}()
 	}
 	if err != nil {
 		return res, err
