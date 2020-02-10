@@ -245,6 +245,7 @@ func (s *Runner) Run(ctx context.Context, stage *drone.Stage) error {
 		log.WithError(err).Debug("stage failed")
 		return err
 	}
-	log.Debug("updated stage to complete")
+	log.WithField("duration", stage.Stopped-stage.Started).
+		Debug("updated stage to complete")
 	return nil
 }
