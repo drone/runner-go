@@ -25,6 +25,7 @@ func calversions(s string) map[string]string {
 	}
 
 	env["DRONE_CALVER"] = version.String()
+	env["DRONE_CALVER_MAJOR_MINOR"] = version.Major + "." + version.Minor
 	env["DRONE_CALVER_MAJOR"] = version.Major
 	env["DRONE_CALVER_MINOR"] = version.Minor
 	env["DRONE_CALVER_MICRO"] = version.Micro

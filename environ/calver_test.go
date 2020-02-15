@@ -13,12 +13,13 @@ import (
 func TestCalver(t *testing.T) {
 	a := calversions("v19.1.0-beta.20190318")
 	b := map[string]string{
-		"DRONE_CALVER":          "19.1.0-beta.20190318",
-		"DRONE_CALVER_MAJOR":    "19",
-		"DRONE_CALVER_MINOR":    "1",
-		"DRONE_CALVER_MICRO":    "0",
-		"DRONE_CALVER_SHORT":    "19.1.0",
-		"DRONE_CALVER_MODIFIER": "beta.20190318",
+		"DRONE_CALVER":             "19.1.0-beta.20190318",
+		"DRONE_CALVER_MAJOR":       "19",
+		"DRONE_CALVER_MAJOR_MINOR": "19.1",
+		"DRONE_CALVER_MINOR":       "1",
+		"DRONE_CALVER_MICRO":       "0",
+		"DRONE_CALVER_SHORT":       "19.1.0",
+		"DRONE_CALVER_MODIFIER":    "beta.20190318",
 	}
 	if diff := cmp.Diff(a, b); diff != "" {
 		t.Errorf("Unexpected calver variables")
@@ -29,11 +30,12 @@ func TestCalver(t *testing.T) {
 func TestCalverAlternate(t *testing.T) {
 	a := calversions("2019.01.0002")
 	b := map[string]string{
-		"DRONE_CALVER":       "2019.01.0002",
-		"DRONE_CALVER_MAJOR": "2019",
-		"DRONE_CALVER_MINOR": "01",
-		"DRONE_CALVER_MICRO": "0002",
-		"DRONE_CALVER_SHORT": "2019.01.0002",
+		"DRONE_CALVER":             "2019.01.0002",
+		"DRONE_CALVER_MAJOR_MINOR": "2019.01",
+		"DRONE_CALVER_MAJOR":       "2019",
+		"DRONE_CALVER_MINOR":       "01",
+		"DRONE_CALVER_MICRO":       "0002",
+		"DRONE_CALVER_SHORT":       "2019.01.0002",
 	}
 	if diff := cmp.Diff(a, b); diff != "" {
 		t.Errorf("Unexpected calver variables")
