@@ -169,6 +169,7 @@ func Build(build *drone.Build) map[string]string {
 		tag := strings.TrimPrefix(build.Ref, "refs/tags/")
 		env["DRONE_TAG"] = tag
 		copyenv(versions(tag), env)
+		copyenv(calversions(tag), env)
 	}
 	return env
 }
