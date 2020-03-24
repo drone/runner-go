@@ -3,6 +3,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Added
+- support for username/password in docker config.json
 - support for multiple external environment providers
 - support for calendar version environment variables
 - drain response body to ensure connection re-use

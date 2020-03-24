@@ -75,6 +75,24 @@ func TestParseFile(t *testing.T) {
 	}
 }
 
+func TestParseUsernamePassword(t *testing.T) {
+	got, err := ParseString(sample2)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	want := []*drone.Registry{
+		{
+			Address:  "index.docker.io",
+			Username: "octocat",
+			Password: "correct-horse-battery-staple",
+		},
+	}
+	if diff := cmp.Diff(got, want); diff != "" {
+		t.Errorf(diff)
+	}
+}
+
 func TestParseFileErr(t *testing.T) {
 	_, err := ParseFile("./testdata/x.json")
 	if _, ok := err.(*os.PathError); !ok {
@@ -122,6 +140,15 @@ var sample = `{
 	"auths": {
 		"https://index.docker.io/v1/": {
 			"auth": "b2N0b2NhdDpjb3JyZWN0LWhvcnNlLWJhdHRlcnktc3RhcGxl"
+		}
+	}
+}`
+
+var sample2 = `{
+	"auths": {
+		"https://index.docker.io/v1/": {
+			"username": "octocat",
+			"password": "correct-horse-battery-staple"
 		}
 	}
 }`
