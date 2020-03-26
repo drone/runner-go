@@ -19,9 +19,16 @@ type Request struct {
 	Build *drone.Build
 }
 
+// Variable defines an environment variable.
+type Variable struct {
+	Name string
+	Data string
+	Mask bool
+}
+
 // Provider is the interface that must be implemented by an
 // environment provider.
 type Provider interface {
 	// List returns a list of environment variables.
-	List(context.Context, *Request) (map[string]string, error)
+	List(context.Context, *Request) ([]*Variable, error)
 }

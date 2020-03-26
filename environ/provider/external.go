@@ -40,7 +40,7 @@ type external struct {
 	client environ.Plugin
 }
 
-func (p *external) List(ctx context.Context, in *Request) (map[string]string, error) {
+func (p *external) List(ctx context.Context, in *Request) ([]*Variable, error) {
 	if p.client == nil {
 		return nil, nil
 	}
@@ -74,5 +74,13 @@ func (p *external) List(ctx context.Context, in *Request) (map[string]string, er
 
 	logger.Trace("environment: external: environment variable list returned")
 
-	return res, nil
+	var out []*Variable
+	for _, v := range res {
+		out = append(out, &Variable{
+			Name: v.Name,
+			Data: v.Data,
+			Mask: v.Mask,
+		})
+	}
+	return out, nil
 }

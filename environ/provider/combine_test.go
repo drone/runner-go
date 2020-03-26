@@ -7,6 +7,8 @@ package provider
 import (
 	"errors"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestCombine(t *testing.T) {
@@ -15,20 +17,29 @@ func TestCombine(t *testing.T) {
 	aa := Static(a)
 	bb := Static(b)
 	p := Combine(aa, bb)
-	out, err := p.List(noContext, nil)
+	got, err := p.List(noContext, nil)
 	if err != nil {
 		t.Error(err)
 		return
 	}
-	if len(out) != 2 {
+	if len(got) != 2 {
 		t.Errorf("Expect combined variable output")
 		return
 	}
-	if out["a"] != "b" {
-		t.Errorf("Missing variable")
+	want := []*Variable{
+		{
+			Name: "a",
+			Data: "b",
+			Mask: false,
+		},
+		{
+			Name: "c",
+			Data: "d",
+			Mask: false,
+		},
 	}
-	if out["c"] != "d" {
-		t.Errorf("Missing variable")
+	if diff := cmp.Diff(got, want); diff != "" {
+		t.Errorf(diff)
 	}
 }
 

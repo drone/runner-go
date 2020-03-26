@@ -4,11 +4,7 @@
 
 package provider
 
-import (
-	"context"
-
-	"github.com/drone/runner-go/environ"
-)
+import "context"
 
 // Combine returns a new combined environment provider,
 // capable of sourcing environment variables from multiple
@@ -21,16 +17,14 @@ type combined struct {
 	sources []Provider
 }
 
-func (p *combined) List(ctx context.Context, in *Request) (map[string]string, error) {
-	out := map[string]string{}
+func (p *combined) List(ctx context.Context, in *Request) ([]*Variable, error) {
+	var out []*Variable
 	for _, source := range p.sources {
 		got, err := source.List(ctx, in)
 		if err != nil {
 			return nil, err
 		}
-		if got != nil {
-			out = environ.Combine(got, out)
-		}
+		out = append(out, got...)
 	}
 	return out, nil
 }

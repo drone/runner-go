@@ -5,19 +5,28 @@
 package provider
 
 import (
-	"reflect"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestStatic(t *testing.T) {
-	a := map[string]string{"a": "b"}
-	p := Static(a)
-	b, err := p.List(noContext, nil)
+	in := map[string]string{"a": "b"}
+
+	got, err := Static(in).List(noContext, nil)
 	if err != nil {
 		t.Error(err)
 		return
 	}
-	if !reflect.DeepEqual(a, b) {
-		t.Errorf("Unexpected environment variable output")
+
+	want := []*Variable{
+		{
+			Name: "a",
+			Data: "b",
+		},
+	}
+
+	if diff := cmp.Diff(got, want); diff != "" {
+		t.Errorf(diff)
 	}
 }

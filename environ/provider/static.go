@@ -17,6 +17,6 @@ type static struct {
 	params map[string]string
 }
 
-func (p *static) List(context.Context, *Request) (map[string]string, error) {
-	return p.params, nil
+func (p *static) List(context.Context, *Request) ([]*Variable, error) {
+	return ToSlice(p.params), nil
 }

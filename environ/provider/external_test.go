@@ -19,9 +19,17 @@ func TestExternal(t *testing.T) {
 		Build: &drone.Build{Event: drone.EventPush},
 		Repo:  &drone.Repo{Private: false},
 	}
-	want := map[string]string{"a": "b"}
+	res := []*environ.Variable{
+		{
+			Name: "a",
+			Data: "b",
+			Mask: true,
+		},
+	}
+
+	want := []*Variable{{Name: "a", Data: "b", Mask: true}}
 	provider := External("http://localhost", "secret", false)
-	provider.(*external).client = &mockPlugin{out: want}
+	provider.(*external).client = &mockPlugin{out: res}
 	got, err := provider.List(noContext, req)
 	if err != nil {
 		t.Error(err)
@@ -91,10 +99,10 @@ func TestMultiExternal(t *testing.T) {
 }
 
 type mockPlugin struct {
-	out map[string]string
+	out []*environ.Variable
 	err error
 }
 
-func (m *mockPlugin) List(context.Context, *environ.Request) (map[string]string, error) {
+func (m *mockPlugin) List(context.Context, *environ.Request) ([]*environ.Variable, error) {
 	return m.out, m.err
 }

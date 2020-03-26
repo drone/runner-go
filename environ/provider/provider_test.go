@@ -11,10 +11,10 @@ import (
 var noContext = context.Background()
 
 type mockProvider struct {
-	out map[string]string
+	out []*Variable
 	err error
 }
 
-func (p *mockProvider) List(context.Context, *Request) (map[string]string, error) {
+func (p *mockProvider) List(context.Context, *Request) ([]*Variable, error) {
 	return p.out, p.err
 }
