@@ -115,7 +115,7 @@ func decode(s string) (username, password string) {
 // registry url.
 func hostname(s string) string {
 	uri, _ := url.Parse(s)
-	if uri.Host != "" {
+	if uri != nil && uri.Host != "" {
 		s = uri.Host
 	}
 	return s
