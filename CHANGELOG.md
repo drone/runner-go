@@ -4,6 +4,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 - fix panic when registry uri parsing errors
+- do not mask single-character secrets
 
 ## [1.6.0] - 2020-03-24
 ### Added

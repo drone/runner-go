@@ -56,6 +56,29 @@ r9nicR5wDy2W
 	}
 }
 
+func TestReplaceMultilineJson(t *testing.T) {
+	key := `{
+  "token":"MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEA0SC5BIYpanOv6wSm"
+}`
+
+	line := `{
+  "token":"MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEA0SC5BIYpanOv6wSm"
+}`
+
+	secrets := []Secret{
+		&mockSecret{Name: "JSON_KEY", Data: key, Mask: true},
+	}
+
+	buf := new(bytes.Buffer)
+	w := newReplacer(&nopCloser{buf}, secrets)
+	w.Write([]byte(line))
+	w.Close()
+
+	if got, want := buf.String(), "{\n  ******\n}"; got != want {
+		t.Errorf("Want masked string %s, got %s", want, got)
+	}
+}
+
 // this test verifies that if there are no secrets to scan and
 // mask, the io.WriteCloser is returned as-is.
 func TestReplaceNone(t *testing.T) {

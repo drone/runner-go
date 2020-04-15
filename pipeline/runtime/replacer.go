@@ -27,7 +27,9 @@ func newReplacer(w io.WriteCloser, secrets []Secret) io.WriteCloser {
 		for _, part := range strings.Split(v, "\n") {
 			part = strings.TrimSpace(part)
 
-			if len(part) == 0 {
+			// avoid masking empty or single character
+			// strings.
+			if len(part) < 2 {
 				continue
 			}
 
