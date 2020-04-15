@@ -242,7 +242,9 @@ func (s *Runner) Run(ctx context.Context, stage *drone.Stage) error {
 	ctxcancel = logger.WithContext(ctxcancel, log)
 	err = s.Exec(ctxcancel, spec, state)
 	if err != nil {
-		log.WithError(err).Debug("stage failed")
+		log.WithError(err).
+			WithField("duration", stage.Stopped-stage.Started).
+			Debug("stage failed")
 		return err
 	}
 	log.WithField("duration", stage.Stopped-stage.Started).
