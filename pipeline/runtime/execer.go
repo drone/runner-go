@@ -98,14 +98,14 @@ func (e *Execer) Exec(ctx context.Context, spec Spec, state *pipeline.State) err
 
 	var result error
 	if err := d.Run(); err != nil {
-		multierror.Append(result, err)
+		result = multierror.Append(result, err)
 	}
 
 	// once pipeline execution completes, notify the state
 	// manager that all steps are finished.
 	state.FinishAll()
 	if err := e.reporter.ReportStage(noContext, state); err != nil {
-		multierror.Append(result, err)
+		result = multierror.Append(result, err)
 	}
 	return result
 }
@@ -201,14 +201,14 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 	// close the stream. If the session is a remote session, the
 	// full log buffer is uploaded to the remote server.
 	if err := wc.Close(); err != nil {
-		multierror.Append(result, err)
+		result = multierror.Append(result, err)
 	}
 
 	if exited != nil {
 		state.Finish(step.GetName(), exited.ExitCode)
 		err := e.reporter.ReportStep(noContext, state, step.GetName())
 		if err != nil {
-			multierror.Append(result, err)
+			result = multierror.Append(result, err)
 		}
 		// if the exit code is 78 the system will skip all
 		// subsequent pending steps in the pipeline.
@@ -229,7 +229,7 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 	state.Fail(step.GetName(), err)
 	err = e.reporter.ReportStep(noContext, state, step.GetName())
 	if err != nil {
-		multierror.Append(result, err)
+		result = multierror.Append(result, err)
 	}
 	return result
 }
