@@ -59,10 +59,6 @@ type Runner struct {
 	// Lookup is a helper function that extracts the resource
 	// from the manifest by name.
 	Lookup func(string, *manifest.Manifest) (manifest.Resource, error)
-
-	// SkipAccept is set to true if the stage has already been
-	// accepted and should force execute regardless.
-	SkipAccept bool
 }
 
 // Run runs the pipeline stage.
@@ -74,24 +70,22 @@ func (s *Runner) Run(ctx context.Context, stage *drone.Stage) error {
 
 	log.Debug("stage received")
 
-	if s.SkipAccept == false {
-		// delivery to a single agent is not guaranteed, which means
-		// we need confirm receipt. The first agent that confirms
-		// receipt of the stage can assume ownership.
+	// delivery to a single agent is not guaranteed, which means
+	// we need confirm receipt. The first agent that confirms
+	// receipt of the stage can assume ownership.
 
-		stage.Machine = s.Machine
-		err := s.Client.Accept(ctx, stage)
-		if err != nil && err == client.ErrOptimisticLock {
-			log.Debug("stage accepted by another runner")
-			return nil
-		}
-		if err != nil {
-			log.WithError(err).Error("cannot accept stage")
-			return err
-		}
-
-		log.Debug("stage accepted")
+	stage.Machine = s.Machine
+	err := s.Client.Accept(ctx, stage)
+	if err != nil && err == client.ErrOptimisticLock {
+		log.Debug("stage accepted by another runner")
+		return nil
 	}
+	if err != nil {
+		log.WithError(err).Error("cannot accept stage")
+		return err
+	}
+
+	log.Debug("stage accepted")
 
 	data, err := s.Client.Detail(ctx, stage)
 	if err != nil {
@@ -106,6 +100,41 @@ func (s *Runner) Run(ctx context.Context, stage *drone.Stage) error {
 		WithField("build.number", data.Build.Number)
 
 	log.Debug("stage details fetched")
+	return s.run(ctx, stage, data)
+}
+
+// RunAccepted runs a pipeline stage that has already been
+// accepted and assigned to a runner.
+func (s *Runner) RunAccepted(ctx context.Context, id int64) error {
+	log := logger.FromContext(ctx).WithField("stage.id", id)
+	log.Debug("stage received")
+
+	data, err := s.Client.Detail(ctx, &drone.Stage{ID: id})
+	if err != nil {
+		log.WithError(err).Error("cannot get stage details")
+		return err
+	}
+
+	log = log.WithField("repo.id", data.Repo.ID).
+		WithField("repo.namespace", data.Repo.Namespace).
+		WithField("repo.name", data.Repo.Name).
+		WithField("build.id", data.Build.ID).
+		WithField("build.number", data.Build.Number)
+
+	log.Debug("stage details fetched")
+	return s.run(ctx, data.Stage, data)
+}
+
+func (s *Runner) run(ctx context.Context, stage *drone.Stage, data *client.Context) error {
+	log := logger.FromContext(ctx).
+		WithField("repo.id", data.Repo.ID).
+		WithField("stage.id", stage.ID).
+		WithField("stage.name", stage.Name).
+		WithField("stage.number", stage.Number).
+		WithField("repo.namespace", data.Repo.Namespace).
+		WithField("repo.name", data.Repo.Name).
+		WithField("build.id", data.Build.ID).
+		WithField("build.number", data.Build.Number)
 
 	ctxdone, cancel := context.WithCancel(ctx)
 	defer cancel()

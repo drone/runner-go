@@ -46,6 +46,7 @@ type (
 	// build.
 	Context struct {
 		Build   *drone.Build    `json:"build"`
+		Stage   *drone.Stage    `json:"stage"`
 		Config  *File           `json:"config"`
 		Netrc   *drone.Netrc    `json:"netrc"`
 		Repo    *drone.Repo     `json:"repository"`
