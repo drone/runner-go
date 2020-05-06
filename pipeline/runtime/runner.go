@@ -59,6 +59,10 @@ type Runner struct {
 	// Lookup is a helper function that extracts the resource
 	// from the manifest by name.
 	Lookup func(string, *manifest.Manifest) (manifest.Resource, error)
+
+	// SkipAccept is set to true if the stage has already been
+	// accepted and should force execute regardless.
+	SkipAccept bool
 }
 
 // Run runs the pipeline stage.
@@ -70,22 +74,24 @@ func (s *Runner) Run(ctx context.Context, stage *drone.Stage) error {
 
 	log.Debug("stage received")
 
-	// delivery to a single agent is not guaranteed, which means
-	// we need confirm receipt. The first agent that confirms
-	// receipt of the stage can assume ownership.
+	if s.SkipAccept == false {
+		// delivery to a single agent is not guaranteed, which means
+		// we need confirm receipt. The first agent that confirms
+		// receipt of the stage can assume ownership.
 
-	stage.Machine = s.Machine
-	err := s.Client.Accept(ctx, stage)
-	if err != nil && err == client.ErrOptimisticLock {
-		log.Debug("stage accepted by another runner")
-		return nil
-	}
-	if err != nil {
-		log.WithError(err).Error("cannot accept stage")
-		return err
-	}
+		stage.Machine = s.Machine
+		err := s.Client.Accept(ctx, stage)
+		if err != nil && err == client.ErrOptimisticLock {
+			log.Debug("stage accepted by another runner")
+			return nil
+		}
+		if err != nil {
+			log.WithError(err).Error("cannot accept stage")
+			return err
+		}
 
-	log.Debug("stage accepted")
+		log.Debug("stage accepted")
+	}
 
 	data, err := s.Client.Detail(ctx, stage)
 	if err != nil {
