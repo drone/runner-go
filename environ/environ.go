@@ -188,6 +188,24 @@ func Link(repo *drone.Repo, build *drone.Build, system *drone.System) map[string
 	}
 }
 
+// Netrc returns a set of environment variables containing
+// the netrc file and credentials.
+func Netrc(netrc *drone.Netrc) map[string]string {
+	env := map[string]string{}
+	if netrc != nil && netrc.Machine != "" {
+		env["DRONE_NETRC_MACHINE"] = netrc.Machine
+		env["DRONE_NETRC_USERNAME"] = netrc.Login
+		env["DRONE_NETRC_PASSWORD"] = netrc.Password
+		env["DRONE_NETRC_FILE"] = fmt.Sprintf(
+			"machine %s login %s password %s",
+			netrc.Machine,
+			netrc.Login,
+			netrc.Password,
+		)
+	}
+	return env
+}
+
 // Combine is a helper function combines one or more maps of
 // environment variables into a single map.
 func Combine(env ...map[string]string) map[string]string {
