@@ -30,6 +30,10 @@ type Runner struct {
 	// machine executing the pipeline.
 	Machine string
 
+	// Environ defines global environment variables that can
+	// be interpolated into the yaml using bash substitution.
+	Environ map[string]string
+
 	// Client is the remote client responsible for interacting
 	// with the central server.
 	Client client.Client
@@ -160,6 +164,7 @@ func (s *Runner) run(ctx context.Context, stage *drone.Stage, data *client.Conte
 	}()
 
 	envs := environ.Combine(
+		s.Environ,
 		environ.System(data.System),
 		environ.Repo(data.Repo),
 		environ.Build(data.Build),

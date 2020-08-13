@@ -3,8 +3,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Fixed
-- fix panic when registry uri parsing errors
+- panic when registry uri parsing errors
 - do not mask single-character secrets
+- capture stage duration on failure
+
+### Added
+- support for running a single pipeline on-demand
+- support for interpolating global environment variables
+- function for creating netrc environment variables
 
 ## [1.6.0] - 2020-03-24
 ### Added
