@@ -50,7 +50,17 @@ func NewExecer(
 // Exec executes the intermediate representation of the pipeline
 // and returns an error if execution fails.
 func (e *Execer) Exec(ctx context.Context, spec Spec, state *pipeline.State) error {
-	defer e.engine.Destroy(noContext, spec)
+	defer func() {
+		log := logger.FromContext(ctx)
+		log.Debugln("destroying the pipeline environment")
+		err := e.engine.Destroy(noContext, spec)
+		if err != nil {
+			log.WithError(err).
+				Debugln("cannot destroy the pipeline environment")
+		} else {
+			log.Debugln("successfully destroyed the pipeline environment")
+		}
+	}()
 
 	if err := e.engine.Setup(noContext, spec); err != nil {
 		state.FailAll(err)
@@ -213,6 +223,7 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 		// if the exit code is 78 the system will skip all
 		// subsequent pending steps in the pipeline.
 		if exited.ExitCode == 78 {
+			log.Debugln("received exit code 78. early exit.")
 			state.SkipAll()
 		}
 		return result
