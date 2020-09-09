@@ -50,8 +50,9 @@ func NewExecer(
 // Exec executes the intermediate representation of the pipeline
 // and returns an error if execution fails.
 func (e *Execer) Exec(ctx context.Context, spec Spec, state *pipeline.State) error {
+	log := logger.FromContext(ctx)
+
 	defer func() {
-		log := logger.FromContext(ctx)
 		log.Debugln("destroying the pipeline environment")
 		err := e.engine.Destroy(noContext, spec)
 		if err != nil {
@@ -108,6 +109,12 @@ func (e *Execer) Exec(ctx context.Context, spec Spec, state *pipeline.State) err
 
 	var result error
 	if err := d.Run(); err != nil {
+		switch err.Error() {
+		case "missing vertext":
+			log.Error(err)
+		case "dependency cycle detected":
+			log.Error(err)
+		}
 		result = multierror.Append(result, err)
 	}
 
