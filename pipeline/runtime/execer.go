@@ -221,6 +221,12 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 		result = multierror.Append(result, err)
 	}
 
+	switch err {
+	case context.Canceled, context.DeadlineExceeded:
+		state.Cancel()
+		return nil
+	}
+
 	if exited != nil {
 		state.Finish(step.GetName(), exited.ExitCode)
 		err := e.reporter.ReportStep(noContext, state, step.GetName())
@@ -234,12 +240,6 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 			state.SkipAll()
 		}
 		return result
-	}
-
-	switch err {
-	case context.Canceled, context.DeadlineExceeded:
-		state.Cancel()
-		return nil
 	}
 
 	// if the step failed with an internal error (as opposed to a
