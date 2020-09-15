@@ -221,7 +221,10 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 		result = multierror.Append(result, err)
 	}
 
-	switch err {
+	// if the context was cancelled and returns a Canceled or
+	// DeadlineExceeded error this indicates the pipeline was
+	// cancelled.
+	switch ctx.Err() {
 	case context.Canceled, context.DeadlineExceeded:
 		state.Cancel()
 		return nil
@@ -240,6 +243,12 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 			state.SkipAll()
 		}
 		return result
+	}
+
+	switch err {
+	case context.Canceled, context.DeadlineExceeded:
+		state.Cancel()
+		return nil
 	}
 
 	// if the step failed with an internal error (as opposed to a
