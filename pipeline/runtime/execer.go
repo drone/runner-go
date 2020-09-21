@@ -231,7 +231,13 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 	}
 
 	if exited != nil {
-		state.Finish(step.GetName(), exited.ExitCode)
+		if exited.OOMKilled {
+			log.Debugln("received oom kill.")
+			state.Finish(step.GetName(), 137)
+		} else {
+			log.Debugln("received exit code %d", exited.ExitCode)
+			state.Finish(step.GetName(), exited.ExitCode)
+		}
 		err := e.reporter.ReportStep(noContext, state, step.GetName())
 		if err != nil {
 			result = multierror.Append(result, err)
