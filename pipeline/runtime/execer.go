@@ -249,7 +249,7 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 			log.Debugln("received oom kill.")
 			state.Finish(step.GetName(), 137)
 		} else {
-			log.Debugln("received exit code %d", exited.ExitCode)
+			log.Debugf("received exit code %d", exited.ExitCode)
 			state.Finish(step.GetName(), exited.ExitCode)
 		}
 		err := e.reporter.ReportStep(noContext, state, step.GetName())
