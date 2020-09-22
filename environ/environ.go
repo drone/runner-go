@@ -74,6 +74,7 @@ func Stage(stage *drone.Stage) map[string]string {
 		"DRONE_STAGE_OS":         stage.OS,
 		"DRONE_STAGE_ARCH":       stage.Arch,
 		"DRONE_STAGE_VARIANT":    stage.Variant,
+		"DRONE_STAGE_VERSION":    fmt.Sprint(stage.Version),
 		"DRONE_STAGE_STATUS":     "success",
 		"DRONE_STAGE_STARTED":    fmt.Sprint(stage.Started),
 		"DRONE_STAGE_FINISHED":   fmt.Sprint(stage.Stopped),
