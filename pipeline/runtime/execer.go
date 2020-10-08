@@ -116,6 +116,13 @@ func (e *Execer) Exec(ctx context.Context, spec Spec, state *pipeline.State) err
 			log.Error(err)
 		}
 		result = multierror.Append(result, err)
+
+		// if the pipeline is not in a failing state,
+		// returning an unexpected error must place the
+		// pipeline in a failing state.
+		if !state.Failed() {
+			state.FailAll(err)
+		}
 	}
 
 	// once pipeline execution completes, notify the state
@@ -258,6 +265,7 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 		}
 		err := e.reporter.ReportStep(noContext, state, step.GetName())
 		if err != nil {
+			log.Warnln("cannot report step status.")
 			result = multierror.Append(result, err)
 		}
 		// if the exit code is 78 the system will skip all
@@ -280,6 +288,7 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 	state.Fail(step.GetName(), err)
 	err = e.reporter.ReportStep(noContext, state, step.GetName())
 	if err != nil {
+		log.Warnln("cannot report step failure.")
 		result = multierror.Append(result, err)
 	}
 	return result

@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - panic when registry uri parsing errors
 - do not mask single-character secrets
 - capture stage duration on failure
+- capture dag errors
+- capture oom kill and exit code
+- cancel step on semaphore deadline exceeded
 
 ### Added
 - support for running a single pipeline on-demand
