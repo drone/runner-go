@@ -56,47 +56,27 @@ func TestStateKilled(t *testing.T) {
 }
 
 func TestStateFinished(t *testing.T) {
-	step := &drone.Step{}
+	step := &drone.Step{Name: "test"}
 	state := &State{
 		Stage: &drone.Stage{
 			Steps: []*drone.Step{step},
 		},
 	}
 	step.Status = drone.StatusRunning
-	if state.finished() == true {
+	if state.Finished(step.Name) == true {
 		t.Errorf("Expect finished false")
 	}
 	step.Status = drone.StatusPending
-	if state.finished() == true {
+	if state.Finished(step.Name) == true {
 		t.Errorf("Expect finished false")
 	}
 	step.Status = drone.StatusKilled
-	if state.finished() == false {
+	if state.Finished(step.Name) == false {
 		t.Errorf("Expect finished true")
 	}
-}
-
-func TestStateSkipped(t *testing.T) {
-	state := &State{
-		Stage: &drone.Stage{
-			Steps: []*drone.Step{
-				{Status: drone.StatusPassing},
-				{Status: drone.StatusRunning},
-			},
-		},
-	}
-	if state.skipped() == true {
-		t.Errorf("Expect skipped false")
-	}
-
-	state.Stage.Steps[1].Status = drone.StatusPassing
-	if state.skipped() == true {
-		t.Errorf("Expect skipped false")
-	}
-
-	state.Stage.Steps[1].Status = drone.StatusSkipped
-	if state.skipped() == false {
-		t.Errorf("Expect skipped true")
+	step.Status = drone.StatusSkipped
+	if state.Finished(step.Name) == false {
+		t.Errorf("Expect finished true")
 	}
 }
 

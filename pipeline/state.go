@@ -73,20 +73,12 @@ func (s *State) Skip(name string) {
 	s.Unlock()
 }
 
-// SkipAll skips all pipeilne steps.
+// SkipAll skips all pipeline steps.
 func (s *State) SkipAll() {
 	s.Lock()
 	s.skipall()
 	s.update()
 	s.Unlock()
-}
-
-// Skipped returns true if all pipeline steps are skipped.
-func (s *State) Skipped() bool {
-	s.Lock()
-	v := s.skipped()
-	s.Unlock()
-	return v
 }
 
 // Start sets the named pipeline step to started.
@@ -112,6 +104,15 @@ func (s *State) FinishAll() {
 	s.finishAll()
 	s.update()
 	s.Unlock()
+}
+
+// Finished returns true if the step is finished.
+func (s *State) Finished(name string) bool {
+	s.Lock()
+	v := s.find(name)
+	d := s.finished(v)
+	s.Unlock()
+	return d
 }
 
 // Find returns the named pipeline step.
@@ -143,20 +144,6 @@ func (s *State) skip(v *drone.Step) {
 		v.ExitCode = 0
 		v.Error = ""
 	}
-}
-
-// helper function returns true if the overall pipeline is
-// finished and remaining steps skipped.
-func (s *State) skipped() bool {
-	if s.finished() == false {
-		return false
-	}
-	for _, v := range s.Stage.Steps {
-		if v.Status == drone.StatusSkipped {
-			return true
-		}
-	}
-	return false
 }
 
 // helper function kills all pipeline steps.
@@ -226,16 +213,14 @@ func (s *State) finish(v *drone.Step, code int) {
 	}
 }
 
-// helper function returns true if the overall pipeline status
-// is failing.
-func (s *State) finished() bool {
-	for _, v := range s.Stage.Steps {
-		switch v.Status {
-		case drone.StatusRunning, drone.StatusPending:
-			return false
-		}
+// helper function returns true if the step is finished.
+func (s *State) finished(v *drone.Step) bool {
+	switch v.Status {
+	case drone.StatusRunning, drone.StatusPending:
+		return false
+	default:
+		return true
 	}
-	return true
 }
 
 // helper function finishes all pipeline steps.

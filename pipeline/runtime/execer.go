@@ -187,9 +187,13 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 	}
 
 	switch {
-	case state.Skipped():
+	case state.Finished(step.GetName()):
+		// skip if the step if already in a finished state,
+		// for example, if the step is marked as skipped.
 		return nil
 	case state.Cancelled():
+		// skip if the pipeline was cancelled, either by the
+		// end user or due to timeout.
 		return nil
 	case step.GetRunPolicy() == RunNever:
 		return nil
