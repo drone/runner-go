@@ -8,7 +8,7 @@ require (
 	github.com/buildkite/yaml v2.1.0+incompatible
 	github.com/coreos/go-semver v0.3.0
 	github.com/docker/go-units v0.4.0
-	github.com/drone/drone-go v1.2.1-0.20200326064413-195394da1018
+	github.com/drone/drone-go v1.4.1-0.20201109202657-b9e58bbbcf27
 	github.com/drone/envsubst v1.0.2
 	github.com/google/go-cmp v0.3.0
 	github.com/hashicorp/go-multierror v1.0.0
