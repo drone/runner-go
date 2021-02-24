@@ -131,6 +131,9 @@ type (
 
 		// Clone returns a copy of the Step.
 		Clone() Step
+
+		// GetImage returns the image used in the step.
+		GetImage() string
 	}
 
 	// State reports the step state.
