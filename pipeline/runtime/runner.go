@@ -267,6 +267,9 @@ func (s *Runner) run(ctx context.Context, stage *drone.Stage, data *client.Conte
 			StageID:   stage.ID,
 			Status:    drone.StatusPending,
 			ErrIgnore: src.GetErrPolicy() == ErrIgnore,
+			Image:     src.GetImage(),
+			Detached:  src.IsDetached(),
+			DependsOn: src.GetDependencies(),
 		})
 	}
 
