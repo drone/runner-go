@@ -2,6 +2,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.7.0] - 2021-03-01
 ### Fixed
 - panic when registry uri parsing errors
 - do not mask single-character secrets
@@ -15,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - support for interpolating global environment variables
 - function for creating netrc environment variables
 - support for debug mode
+- adding depends_on, image and detached fields to step
 
 ### Updated
 - upgrade drone-go dependency version
