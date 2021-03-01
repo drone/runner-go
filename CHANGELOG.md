@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - support for running a single pipeline on-demand
 - support for interpolating global environment variables
 - function for creating netrc environment variables
+- support for debug mode
+
+### Updated
+- upgrade drone-go dependency version
 
 ## [1.6.0] - 2020-03-24
 ### Added
