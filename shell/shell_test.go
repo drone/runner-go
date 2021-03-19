@@ -28,7 +28,7 @@ func TestCommands(t *testing.T) {
 }
 
 func TestScript(t *testing.T) {
-	got, want := Script([]string{"go build", "go test"}), exampleScript
+	got, want := Script([]string{"go build", "go test", "go build\ngo test"}), exampleScript
 	if got != want {
 		t.Errorf("Want %q, got %q", want, got)
 	}
@@ -37,9 +37,13 @@ func TestScript(t *testing.T) {
 var exampleScript = `
 set -e
 
-echo + "go build"
+echo -e "go build" | sed -e 's/^/+ /'
 go build
 
-echo + "go test"
+echo -e "go test" | sed -e 's/^/+ /'
+go test
+
+echo -e "go build\ngo test" | sed -e 's/^/+ /'
+go build
 go test
 `

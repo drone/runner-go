@@ -47,6 +47,6 @@ const optionScript = "set -e"
 // traceScript is a helper script that is added to
 // the build script to trace a command.
 const traceScript = `
-echo + %s
+echo -e %s | sed -e 's/^/+ /'
 %s
 `
