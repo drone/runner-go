@@ -175,6 +175,7 @@ func Build(build *drone.Build) map[string]string {
 	}
 	if build.Event == drone.EventPullRequest {
 		env["DRONE_PULL_REQUEST"] = re.FindString(build.Ref)
+		env["DRONE_PULL_REQUEST_TITLE"] = build.Title
 	}
 	if strings.HasPrefix(build.Ref, "refs/tags/") {
 		tag := strings.TrimPrefix(build.Ref, "refs/tags/")

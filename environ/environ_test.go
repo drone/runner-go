@@ -64,6 +64,7 @@ func TestBuild(t *testing.T) {
 		Before:       "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
 		Ref:          "refs/pull/32/head",
 		Link:         "https://github.com/octocat/Hello-World/commit/762941318ee16e59dabbacb1b4049eec22f0d303",
+		Title:        "feat: update README",
 		Message:      "updated README",
 		Author:       "octocat",
 		AuthorAvatar: "https://avatars0.githubusercontent.com/u/583231",
@@ -122,6 +123,7 @@ func TestBuild(t *testing.T) {
 		"DRONE_DEPLOY_ID":            "235634642",
 		"DRONE_FAILED_STAGES":        "frontend",
 		"DRONE_PULL_REQUEST":         "32",
+		"DRONE_PULL_REQUEST_TITLE":   "feat: update README",
 		"DRONE_SOURCE_BRANCH":        "develop",
 		"DRONE_TARGET_BRANCH":        "master",
 
