@@ -14,6 +14,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/drone/drone-go/drone"
@@ -99,7 +100,7 @@ func (p *HTTPClient) Request(ctx context.Context, args *Filter) (*drone.Stage, e
 
 // Accept accepts the build stage for execution.
 func (p *HTTPClient) Accept(ctx context.Context, stage *drone.Stage) error {
-	uri := fmt.Sprintf(endpointStage+"?machine=%s", stage.ID, stage.Machine)
+	uri := fmt.Sprintf(endpointStage+"?machine=%s", stage.ID, url.PathEscape(stage.Machine))
 	src := stage
 	dst := new(drone.Stage)
 	_, err := p.retry(ctx, uri, "POST", nil, dst)
