@@ -58,6 +58,7 @@ func TestRepo(t *testing.T) {
 
 func TestBuild(t *testing.T) {
 	v := &drone.Build{
+		Trigger:      "root",
 		Source:       "develop",
 		Target:       "master",
 		After:        "762941318ee16e59dabbacb1b4049eec22f0d303",
@@ -126,6 +127,7 @@ func TestBuild(t *testing.T) {
 		"DRONE_PULL_REQUEST_TITLE":   "feat: update README",
 		"DRONE_SOURCE_BRANCH":        "develop",
 		"DRONE_TARGET_BRANCH":        "master",
+		"DRONE_BUILD_TRIGGER":        "root",
 
 		"CI_BUILD_CREATED":        "1561421740",
 		"CI_BUILD_EVENT":          "pull_request",
