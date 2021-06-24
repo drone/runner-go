@@ -3,6 +3,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.0] - 2021-06-24
+### Fixed
+- graceful shutdown of http servers
+- url escape of 'machine' parameter
+
+### Added
+- environment variable for build trigger
+- environment variable for pull request title
+
 ## [1.7.0] - 2021-03-01
 ### Fixed
 - panic when registry uri parsing errors
