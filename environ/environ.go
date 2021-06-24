@@ -111,6 +111,14 @@ func StepArgs(name string, number int64) map[string]string {
 	}
 }
 
+// StepName returns a set of environment variables containing
+// only the step name.
+func StepName(name string) map[string]string {
+	return map[string]string{
+		"DRONE_STEP_NAME": name,
+	}
+}
+
 // Build returns a set of environment variables containing
 // build metadata.
 func Build(build *drone.Build) map[string]string {
