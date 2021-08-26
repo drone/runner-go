@@ -21,9 +21,16 @@ func Command() (string, []string) {
 	return "/bin/sh", []string{"-e"}
 }
 
-// Script converts a slice of individual shell commands to
-// a posix-compliant shell script.
 func Script(commands []string) string {
+	return script(commands, true)
+}
+
+func SilentScript(commands []string) string {
+	return script(commands, false)
+}
+
+// Script converts a slice of individual shell commands to a posix-compliant shell script.
+func script(commands []string, trace bool) string {
 	buf := new(bytes.Buffer)
 	fmt.Fprintln(buf)
 	fmt.Fprintf(buf, optionScript)
@@ -31,11 +38,17 @@ func Script(commands []string) string {
 	for _, command := range commands {
 		escaped := fmt.Sprintf("%q", command)
 		escaped = strings.Replace(escaped, "$", `\$`, -1)
-		buf.WriteString(fmt.Sprintf(
-			traceScript,
-			escaped,
-			command,
-		))
+		var stringToWrite string
+		if trace {
+			stringToWrite = fmt.Sprintf(
+				traceScript,
+				escaped,
+				command,
+			)
+		} else {
+			stringToWrite = "\n" + command + "\n"
+		}
+		buf.WriteString(stringToWrite)
 	}
 	return buf.String()
 }

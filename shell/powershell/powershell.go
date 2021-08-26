@@ -24,9 +24,17 @@ func Command() (string, []string) {
 	}
 }
 
+func Script(commands []string) string {
+	return script(commands, true)
+}
+
+func SilentScript(commands []string) string {
+	return script(commands, false)
+}
+
 // Script converts a slice of individual shell commands to
 // a powershell script.
-func Script(commands []string) string {
+func script(commands []string, trace bool) string {
 	buf := new(bytes.Buffer)
 	fmt.Fprintln(buf)
 	fmt.Fprintf(buf, optionScript)
@@ -34,11 +42,17 @@ func Script(commands []string) string {
 	for _, command := range commands {
 		escaped := fmt.Sprintf("%q", "+ "+command)
 		escaped = strings.Replace(escaped, "$", "`$", -1)
-		buf.WriteString(fmt.Sprintf(
-			traceScript,
-			escaped,
-			command,
-		))
+		var stringToWrite string
+		if trace {
+			stringToWrite = fmt.Sprintf(
+				traceScript,
+				escaped,
+				command,
+			)
+		} else {
+			stringToWrite = "\n" + command + "\nif ($LastExitCode -gt 0) { exit $LastExitCode }\n"
+		}
+		buf.WriteString(stringToWrite)
 	}
 	return buf.String()
 }
@@ -47,8 +61,7 @@ func Script(commands []string) string {
 // to set shell options, in this case, to exit on error.
 const optionScript = `$erroractionpreference = "stop"`
 
-// traceScript is a helper script that is added to
-// the build script to trace a command.
+// traceScript is a helper script that is added to the build script to trace a command.
 const traceScript = `
 echo %s
 %s

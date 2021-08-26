@@ -32,6 +32,13 @@ func TestScript(t *testing.T) {
 	}
 }
 
+func TestSilentScript(t *testing.T) {
+	got, want := SilentScript([]string{"go build", "go test"}), exampleSilentScript
+	if got != want {
+		t.Errorf("Want %q, got %q", want, got)
+	}
+}
+
 var exampleScript = `
 set -e
 
@@ -39,5 +46,13 @@ echo + "go build"
 go build
 
 echo + "go test"
+go test
+`
+
+var exampleSilentScript = `
+set -e
+
+go build
+
 go test
 `

@@ -32,7 +32,14 @@ func TestCommands(t *testing.T) {
 func TestScript(t *testing.T) {
 	got, want := Script([]string{"go build", "go test"}), exampleScript
 	if got != want {
-		t.Errorf("Want %q, got %q", want, got)
+		t.Errorf("Want %q\ngot  %q", want, got)
+	}
+}
+
+func TestSilentScript(t *testing.T) {
+	got, want := SilentScript([]string{"go build", "go test"}), exampleSilentScript
+	if got != want {
+		t.Errorf("Want \n%q\ngot\n%q", want, got)
 	}
 }
 
@@ -44,6 +51,16 @@ go build
 if ($LastExitCode -gt 0) { exit $LastExitCode }
 
 echo "+ go test"
+go test
+if ($LastExitCode -gt 0) { exit $LastExitCode }
+`
+
+var exampleSilentScript = `
+$erroractionpreference = "stop"
+
+go build
+if ($LastExitCode -gt 0) { exit $LastExitCode }
+
 go test
 if ($LastExitCode -gt 0) { exit $LastExitCode }
 `
