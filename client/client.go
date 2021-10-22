@@ -89,4 +89,7 @@ type Client interface {
 
 	// Upload uploads the full logs to the server.
 	Upload(ctx context.Context, step int64, lines []*drone.Line) error
+
+	// UploadCard uploads a card to drone server.
+	UploadCard(ctx context.Context, step int64, card *drone.CardInput) error
 }

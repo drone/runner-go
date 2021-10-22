@@ -24,6 +24,7 @@ type Execer struct {
 	engine   Engine
 	reporter pipeline.Reporter
 	streamer pipeline.Streamer
+	uploader pipeline.Uploader
 	sem      *semaphore.Weighted
 }
 
@@ -31,6 +32,7 @@ type Execer struct {
 func NewExecer(
 	reporter pipeline.Reporter,
 	streamer pipeline.Streamer,
+	uploader pipeline.Uploader,
 	engine Engine,
 	threads int64,
 ) *Execer {
@@ -38,6 +40,7 @@ func NewExecer(
 		reporter: reporter,
 		streamer: streamer,
 		engine:   engine,
+		uploader: uploader,
 	}
 	if threads > 0 {
 		// optional semaphore that limits the number of steps
@@ -250,6 +253,15 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 		result = multierror.Append(result, err)
 	}
 
+	// stream card data to server if exists
+	file, _ := e.engine.StreamFile(ctx, copy, "/tmp/card.json")
+	if file != nil {
+		s := state.Find(step.GetName())
+		err = e.uploader.UploadCard(ctx, file, s.ID)
+		if err != nil {
+			return nil
+		}
+	}
 	// if the context was cancelled and returns a Canceled or
 	// DeadlineExceeded error this indicates the pipeline was
 	// cancelled.
