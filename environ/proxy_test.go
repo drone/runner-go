@@ -24,6 +24,8 @@ func TestProxy(t *testing.T) {
 			return "http://dummy.http.proxy"
 		case "https_proxy":
 			return "http://dummy.https.proxy"
+		case "all_proxy":
+			return "http://dummy.https.proxy"
 		default:
 			return ""
 		}
@@ -36,6 +38,8 @@ func TestProxy(t *testing.T) {
 		"HTTP_PROXY":  "http://dummy.http.proxy",
 		"https_proxy": "http://dummy.https.proxy",
 		"HTTPS_PROXY": "http://dummy.https.proxy",
+		"all_proxy":   "http://dummy.https.proxy",
+		"ALL_PROXY":   "http://dummy.https.proxy",
 	}
 	b := Proxy()
 	if diff := cmp.Diff(a, b); diff != "" {

@@ -23,6 +23,10 @@ func Proxy() map[string]string {
 		environ["https_proxy"] = value
 		environ["HTTPS_PROXY"] = value
 	}
+	if value := envAnyCase("all_proxy"); value != "" {
+		environ["all_proxy"] = value
+		environ["ALL_PROXY"] = value
+	}
 	return environ
 }
 
