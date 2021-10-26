@@ -254,10 +254,9 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 	}
 
 	// stream card data to server if exists
-	file, _ := e.engine.StreamFile(ctx, copy, "/tmp/card.json")
+	file, _ := e.engine.StreamFile(ctx, spec, copy, "/tmp/card.json")
 	if file != nil {
-		s := state.Find(step.GetName())
-		err = e.uploader.UploadCard(ctx, file, s.ID)
+		err = e.uploader.UploadCard(ctx, file, state, step.GetName())
 		if err != nil {
 			return nil
 		}

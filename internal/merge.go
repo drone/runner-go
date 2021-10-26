@@ -25,4 +25,5 @@ func MergeStep(src, dst *drone.Step) {
 	dst.Started = src.Started
 	dst.Stopped = src.Stopped
 	dst.Version = src.Version
+	dst.Schema = src.Schema
 }

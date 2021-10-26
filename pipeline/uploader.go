@@ -6,7 +6,7 @@ import (
 )
 
 type Uploader interface {
-	UploadCard(ctx context.Context, r io.ReadCloser, step int64) error
+	UploadCard(context.Context, io.ReadCloser, *State, string) error
 }
 
 func NopUploader() Uploader {
@@ -15,4 +15,4 @@ func NopUploader() Uploader {
 
 type nopUploader struct{}
 
-func (*nopUploader) UploadCard(ctx context.Context, r io.ReadCloser, step int64) error { return nil }
+func (*nopUploader) UploadCard(context.Context, io.ReadCloser, *State, string) error { return nil }
