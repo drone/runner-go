@@ -3,7 +3,6 @@ package uploader
 import (
 	"context"
 	"encoding/json"
-	"io"
 
 	"github.com/drone/drone-go/drone"
 	"github.com/drone/runner-go/client"
@@ -23,14 +22,10 @@ func New(client client.Client) *Upload {
 	}
 }
 
-func (s *Upload) UploadCard(ctx context.Context, r io.ReadCloser, state *pipeline.State, stepName string) error {
+func (s *Upload) UploadCard(ctx context.Context, bytes []byte, state *pipeline.State, stepName string) error {
 	src := state.Find(stepName)
-	bytes, err := io.ReadAll(r)
-	if err != nil {
-		return err
-	}
 	card := drone.CardInput{}
-	err = json.Unmarshal(bytes, &card)
+	err := json.Unmarshal(bytes, &card)
 	if err != nil {
 		return err
 	}

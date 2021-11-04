@@ -84,9 +84,6 @@ type (
 
 		// Run runs the pipeline step.
 		Run(context.Context, Spec, Step, io.Writer) (*State, error)
-
-		// StreamFile copies a file to the server
-		StreamFile(context.Context, Spec, Step, string) (io.ReadCloser, error)
 	}
 
 	// Spec is an interface that must be implemented by all

@@ -8,6 +8,8 @@ import (
 	"context"
 	"sync"
 
+	"github.com/drone/runner-go/livelog/extractor"
+
 	"github.com/drone/drone-go/drone"
 	"github.com/drone/runner-go/environ"
 	"github.com/drone/runner-go/logger"
@@ -235,17 +237,20 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 	wc := e.streamer.Stream(noContext, state, step.GetName())
 	wc = newReplacer(wc, secretSlice(step))
 
+	// wrap writer in extrator
+	ext := extractor.New(wc)
+
 	// if the step is configured as a daemon, it is detached
 	// from the main process and executed separately.
 	if step.IsDetached() {
 		go func() {
-			e.engine.Run(ctx, spec, copy, wc)
+			e.engine.Run(ctx, spec, copy, ext)
 			wc.Close()
 		}()
 		return nil
 	}
 
-	exited, err := e.engine.Run(ctx, spec, copy, wc)
+	exited, err := e.engine.Run(ctx, spec, copy, ext)
 
 	// close the stream. If the session is a remote session, the
 	// full log buffer is uploaded to the remote server.
@@ -253,14 +258,15 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 		result = multierror.Append(result, err)
 	}
 
-	// stream card data to server if exists
-	file, _ := e.engine.StreamFile(ctx, spec, copy, "/tmp/card.json")
-	if file != nil {
-		err = e.uploader.UploadCard(ctx, file, state, step.GetName())
+	// upload card if exists
+	card, ok := ext.File()
+	if ok {
+		err = e.uploader.UploadCard(ctx, card, state, step.GetName())
 		if err != nil {
 			return nil
 		}
 	}
+
 	// if the context was cancelled and returns a Canceled or
 	// DeadlineExceeded error this indicates the pipeline was
 	// cancelled.
