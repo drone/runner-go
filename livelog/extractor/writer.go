@@ -1,6 +1,7 @@
 package extractor
 
 import (
+	"bytes"
 	"encoding/base64"
 	"io"
 	"regexp"
@@ -18,11 +19,10 @@ func New(w io.Writer) *Writer {
 }
 
 func (e *Writer) Write(p []byte) (n int, err error) {
-	card := re.FindStringSubmatch(string(p))
-	if card == nil {
+	if bytes.HasPrefix(p, []byte("#")) == false {
 		return e.base.Write(p)
 	}
-
+	card := re.FindStringSubmatch(string(p))
 	data, err := base64.StdEncoding.DecodeString(card[len(card)-1:][0])
 	if err == nil {
 		e.file = data

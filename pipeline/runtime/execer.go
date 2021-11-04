@@ -262,7 +262,8 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 	if ok {
 		err = e.uploader.UploadCard(ctx, card, state, step.GetName())
 		if err != nil {
-			return nil
+			log.Warnln("cannot upload card")
+			result = multierror.Append(result, err)
 		}
 	}
 
