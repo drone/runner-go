@@ -8,10 +8,9 @@ import (
 	"context"
 	"sync"
 
-	"github.com/drone/runner-go/livelog/extractor"
-
 	"github.com/drone/drone-go/drone"
 	"github.com/drone/runner-go/environ"
+	"github.com/drone/runner-go/livelog/extractor"
 	"github.com/drone/runner-go/logger"
 	"github.com/drone/runner-go/pipeline"
 
