@@ -3,14 +3,17 @@ package extractor
 import (
 	"bytes"
 	"encoding/base64"
+	"encoding/json"
 	"io"
+	"os"
 	"regexp"
 )
 
 var (
-	prefix = []byte("\u001B]1338;")
-	suffix = []byte("\u001B]0m")
-	re     = regexp.MustCompilePOSIX("\u001B]1338;((.*?)\u001B]0m)")
+	prefix       = []byte("\u001B]1338;")
+	suffix       = []byte("\u001B]0m")
+	re           = regexp.MustCompilePOSIX("\u001B]1338;((.*?)\u001B]0m)")
+	disableCards = os.Getenv("DRONE_FLAG_ENABLE_CARDS") == "false"
 )
 
 type Writer struct {
@@ -24,6 +27,9 @@ func New(w io.Writer) *Writer {
 }
 
 func (e *Writer) Write(p []byte) (n int, err error) {
+	if disableCards {
+		return e.base.Write(p)
+	}
 	if bytes.HasPrefix(p, prefix) == false && e.chunked == false {
 		return e.base.Write(p)
 	}
@@ -52,5 +58,13 @@ func (e *Writer) File() ([]byte, bool) {
 	if err != nil {
 		return nil, false
 	}
-	return data, true
+	if isJSON(data) {
+		return data, true
+	}
+	return nil, false
+}
+
+func isJSON(data []byte) bool {
+	var js json.RawMessage
+	return json.Unmarshal(data, &js) == nil
 }
