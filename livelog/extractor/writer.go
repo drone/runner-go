@@ -27,6 +27,7 @@ func (e *Writer) Write(p []byte) (n int, err error) {
 	if bytes.HasPrefix(p, prefix) == false && e.chunked == false {
 		return e.base.Write(p)
 	}
+	n = len(p)
 
 	// if the data does not include the ansi suffix,
 	// it exceeds the size of the buffer and is chunked.
