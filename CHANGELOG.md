@@ -1,5 +1,17 @@
 # Changelog
 
+## [v1.10.0](https://github.com/drone/runner-go/tree/v1.10.0) (2021-11-10)
+
+[Full Changelog](https://github.com/drone/runner-go/compare/v1.9.0...v1.10.0)
+
+**Implemented enhancements:**
+
+- read & upload card data to drone server [\#16](https://github.com/drone/runner-go/pull/16) ([eoinmcafee00](https://github.com/eoinmcafee00))
+
+**Merged pull requests:**
+
+- feat\(proxy\): support for all\_proxy variables [\#15](https://github.com/drone/runner-go/pull/15) ([ysicing](https://github.com/ysicing))
+
 ## [v1.9.0](https://github.com/drone/runner-go/tree/v1.9.0) (2021-08-26)
 
 [Full Changelog](https://github.com/drone/runner-go/compare/v1.8.0...v1.9.0)
@@ -7,6 +19,10 @@
 **Implemented enhancements:**
 
 - \(feat\) add silent version of bash and powershell Script [\#13](https://github.com/drone/runner-go/pull/13) ([tphoney](https://github.com/tphoney))
+
+**Merged pull requests:**
+
+- \(maint\) v1.9.0 release prep [\#14](https://github.com/drone/runner-go/pull/14) ([tphoney](https://github.com/tphoney))
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
