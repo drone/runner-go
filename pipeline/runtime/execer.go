@@ -10,6 +10,7 @@ import (
 
 	"github.com/drone/drone-go/drone"
 	"github.com/drone/runner-go/environ"
+	"github.com/drone/runner-go/livelog/extractor"
 	"github.com/drone/runner-go/logger"
 	"github.com/drone/runner-go/pipeline"
 
@@ -24,6 +25,7 @@ type Execer struct {
 	engine   Engine
 	reporter pipeline.Reporter
 	streamer pipeline.Streamer
+	uploader pipeline.Uploader
 	sem      *semaphore.Weighted
 }
 
@@ -31,6 +33,7 @@ type Execer struct {
 func NewExecer(
 	reporter pipeline.Reporter,
 	streamer pipeline.Streamer,
+	uploader pipeline.Uploader,
 	engine Engine,
 	threads int64,
 ) *Execer {
@@ -38,6 +41,7 @@ func NewExecer(
 		reporter: reporter,
 		streamer: streamer,
 		engine:   engine,
+		uploader: uploader,
 	}
 	if threads > 0 {
 		// optional semaphore that limits the number of steps
@@ -232,22 +236,35 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 	wc := e.streamer.Stream(noContext, state, step.GetName())
 	wc = newReplacer(wc, secretSlice(step))
 
+	// wrap writer in extrator
+	ext := extractor.New(wc)
+
 	// if the step is configured as a daemon, it is detached
 	// from the main process and executed separately.
 	if step.IsDetached() {
 		go func() {
-			e.engine.Run(ctx, spec, copy, wc)
+			e.engine.Run(ctx, spec, copy, ext)
 			wc.Close()
 		}()
 		return nil
 	}
 
-	exited, err := e.engine.Run(ctx, spec, copy, wc)
+	exited, err := e.engine.Run(ctx, spec, copy, ext)
 
 	// close the stream. If the session is a remote session, the
 	// full log buffer is uploaded to the remote server.
 	if err := wc.Close(); err != nil {
 		result = multierror.Append(result, err)
+	}
+
+	// upload card if exists
+	card, ok := ext.File()
+	if ok {
+		err = e.uploader.UploadCard(ctx, card, state, step.GetName())
+		if err != nil {
+			log.Warnln("cannot upload card")
+			result = multierror.Append(result, err)
+		}
 	}
 
 	// if the context was cancelled and returns a Canceled or

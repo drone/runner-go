@@ -30,6 +30,7 @@ const (
 	endpointWatch  = "/rpc/v2/build/%d/watch"
 	endpointBatch  = "/rpc/v2/step/%d/logs/batch"
 	endpointUpload = "/rpc/v2/step/%d/logs/upload"
+	endpointCard   = "/rpc/v2/step/%d/card"
 )
 
 var _ Client = (*HTTPClient)(nil)
@@ -198,6 +199,13 @@ func (p *HTTPClient) Batch(ctx context.Context, step int64, lines []*drone.Line)
 func (p *HTTPClient) Upload(ctx context.Context, step int64, lines []*drone.Line) error {
 	uri := fmt.Sprintf(endpointUpload, step)
 	_, err := p.retry(ctx, uri, "POST", &lines, nil)
+	return err
+}
+
+// UploadCard uploads a card to drone server.
+func (p *HTTPClient) UploadCard(ctx context.Context, step int64, card *drone.CardInput) error {
+	uri := fmt.Sprintf(endpointCard, step)
+	_, err := p.retry(ctx, uri, "POST", &card, nil)
 	return err
 }
 
