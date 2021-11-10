@@ -1,8 +1,8 @@
 # Changelog
 
-## [v2.0.0](https://github.com/drone/runner-go/tree/v2.0.0) (2021-11-10)
+## [v1.10.0](https://github.com/drone/runner-go/tree/v1.10.0) (2021-11-10)
 
-[Full Changelog](https://github.com/drone/runner-go/compare/v1.9.0...v2.0.0)
+[Full Changelog](https://github.com/drone/runner-go/compare/v1.9.0...v1.10.0)
 
 **Implemented enhancements:**
 
