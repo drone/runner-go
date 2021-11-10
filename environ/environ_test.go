@@ -264,6 +264,7 @@ func TestStage(t *testing.T) {
 		"DRONE_STAGE_FINISHED":   "1561421753",
 		"DRONE_STAGE_DEPENDS_ON": "backend,frontend",
 		"DRONE_FAILED_STEPS":     "test",
+		"DRONE_CARD_PATH":        "/dev/stdout",
 	}
 	if diff := cmp.Diff(a, b); diff != "" {
 		t.Fail()
