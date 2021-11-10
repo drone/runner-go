@@ -79,6 +79,7 @@ func Stage(stage *drone.Stage) map[string]string {
 		"DRONE_STAGE_STARTED":    fmt.Sprint(stage.Started),
 		"DRONE_STAGE_FINISHED":   fmt.Sprint(stage.Stopped),
 		"DRONE_STAGE_DEPENDS_ON": strings.Join(stage.DependsOn, ","),
+		"DRONE_CARD_PATH":        "/dev/stdout",
 	}
 	if isStageFailing(stage) {
 		env["DRONE_STAGE_STATUS"] = "failure"
