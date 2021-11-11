@@ -4,7 +4,7 @@
 
 [Full Changelog](https://github.com/drone/runner-go/compare/v1.10.0...v1.10.1)
 
-**Merged pull requests:**
+**Implemented enhancements:**
 
 - create card path env variable [\#19](https://github.com/drone/runner-go/pull/19) ([eoinmcafee00](https://github.com/eoinmcafee00))
 
