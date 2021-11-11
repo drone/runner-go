@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.11.0](https://github.com/drone/runner-go/tree/v1.11.0) (2021-11-11)
+
+[Full Changelog](https://github.com/drone/runner-go/compare/v1.10.0...v1.11.0)
+
+**Implemented enhancements:**
+
+- create card path env variable [\#19](https://github.com/drone/runner-go/pull/19) ([eoinmcafee00](https://github.com/eoinmcafee00))
+
 ## [v1.10.0](https://github.com/drone/runner-go/tree/v1.10.0) (2021-11-10)
 
 [Full Changelog](https://github.com/drone/runner-go/compare/v1.9.0...v1.10.0)
@@ -10,6 +18,7 @@
 
 **Merged pull requests:**
 
+- Release/1.10.0 [\#18](https://github.com/drone/runner-go/pull/18) ([eoinmcafee00](https://github.com/eoinmcafee00))
 - feat\(proxy\): support for all\_proxy variables [\#15](https://github.com/drone/runner-go/pull/15) ([ysicing](https://github.com/ysicing))
 
 ## [v1.9.0](https://github.com/drone/runner-go/tree/v1.9.0) (2021-08-26)
