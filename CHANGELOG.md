@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.12.0](https://github.com/drone/runner-go/tree/v1.12.0) (2021-11-30)
+
+[Full Changelog](https://github.com/drone/runner-go/compare/v1.11.0...v1.12.0)
+
+**Implemented enhancements:**
+
+- Add `retries` option to clone manifest [\#22](https://github.com/drone/runner-go/pull/22) ([julienduchesne](https://github.com/julienduchesne))
+
 ## [v1.11.0](https://github.com/drone/runner-go/tree/v1.11.0) (2021-11-11)
 
 [Full Changelog](https://github.com/drone/runner-go/compare/v1.10.0...v1.11.0)
@@ -7,6 +15,10 @@
 **Implemented enhancements:**
 
 - create card path env variable [\#19](https://github.com/drone/runner-go/pull/19) ([eoinmcafee00](https://github.com/eoinmcafee00))
+
+**Merged pull requests:**
+
+- Release/1.11.0 [\#21](https://github.com/drone/runner-go/pull/21) ([eoinmcafee00](https://github.com/eoinmcafee00))
 
 ## [v1.10.0](https://github.com/drone/runner-go/tree/v1.10.0) (2021-11-10)
 
