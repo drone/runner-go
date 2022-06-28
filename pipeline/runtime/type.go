@@ -94,6 +94,9 @@ type (
 
 		// StepLen returns the number of steps.
 		StepLen() int
+
+		// OutputVariablesToStep sends output variables to the step.
+		OutputVariablesToStep() map[string]string
 	}
 
 	// Step is an interface that must be implemented by all

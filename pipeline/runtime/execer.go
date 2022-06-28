@@ -219,6 +219,8 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 
 	copy := step.Clone()
 
+	// read the output env file.
+	outputVars := spec.OutputVariablesToStep()
 	// the pipeline environment variables need to be updated to
 	// reflect the current state of the build and stage.
 	state.Lock()
@@ -228,6 +230,7 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 			environ.Build(state.Build),
 			environ.Stage(state.Stage),
 			environ.Step(findStep(state, step.GetName())),
+			outputVars,
 		),
 	)
 	state.Unlock()
