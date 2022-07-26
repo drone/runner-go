@@ -9,62 +9,55 @@ package livelog
 import (
 	"context"
 	"strings"
+	"sync"
 	"time"
 
+	"github.com/drone/drone-go/drone"
 	"github.com/drone/runner-go/client"
 )
 
 // defaultLimit is the default maximum log size in bytes.
 const defaultLimit = 5242880 // 5MB
 
-// Writer is an io.WriteCloser that sends logs to the server.
+// Writer is an io.Writer that sends logs to the server.
 type Writer struct {
+	sync.Mutex
+
 	client client.Client
 
-	id int64
+	id    int64
+	num   int
+	now   time.Time
+	size  int
+	limit int
 
 	interval time.Duration
-	lineList *list
+	pending  []*drone.Line
+	history  []*drone.Line
 
-	stopStreamFn func()
-	doneStream   <-chan struct{}
-	ready        chan struct{}
+	closed bool
+	close  chan struct{}
+	ready  chan struct{}
 }
 
-// New returns a new Writer.
+// New returns a new Wrtier.
 func New(client client.Client, id int64) *Writer {
-	streamCtx, stopStream := context.WithCancel(context.Background())
-
 	b := &Writer{
-		client:       client,
-		id:           id,
-		interval:     time.Second,
-		lineList:     makeList(defaultLimit),
-		stopStreamFn: stopStream,
-		doneStream:   streamCtx.Done(),
-		ready:        make(chan struct{}, 1),
+		client:   client,
+		id:       id,
+		now:      time.Now(),
+		limit:    defaultLimit,
+		interval: time.Second,
+		close:    make(chan struct{}),
+		ready:    make(chan struct{}, 1),
 	}
-
-	// a call to stopStream() stops this goroutine.
-	// this happens when the Close method is called or after overflow of output data (>limit).
 	go b.start()
-
 	return b
 }
 
 // SetLimit sets the Writer limit.
 func (b *Writer) SetLimit(limit int) {
-	b.lineList.SetLimit(limit)
-}
-
-// GetLimit returns the Writer limit.
-func (b *Writer) GetLimit() int {
-	return b.lineList.GetLimit()
-}
-
-// GetSize returns amount of output data the Writer currently holds.
-func (b *Writer) GetSize() int {
-	return b.lineList.GetSize()
+	b.limit = limit
 }
 
 // SetInterval sets the Writer flusher interval.
@@ -74,8 +67,31 @@ func (b *Writer) SetInterval(interval time.Duration) {
 
 // Write uploads the live log stream to the server.
 func (b *Writer) Write(p []byte) (n int, err error) {
-	if isOverLimit := b.lineList.Push(p); isOverLimit {
-		b.stopStreamFn()
+	for _, part := range split(p) {
+		line := &drone.Line{
+			Number:    b.num,
+			Message:   part,
+			Timestamp: int64(time.Since(b.now).Seconds()),
+		}
+
+		for b.size+len(p) > b.limit {
+			b.stop() // buffer is full, step streaming data
+			b.size -= len(b.history[0].Message)
+			b.history = b.history[1:]
+		}
+
+		b.size = b.size + len(part)
+		b.num++
+
+		if b.stopped() == false {
+			b.Lock()
+			b.pending = append(b.pending, line)
+			b.Unlock()
+		}
+
+		b.Lock()
+		b.history = append(b.history, line)
+		b.Unlock()
 	}
 
 	select {
@@ -86,48 +102,78 @@ func (b *Writer) Write(p []byte) (n int, err error) {
 	return len(p), nil
 }
 
-// Close closes the writer and uploads the full contents to the server.
+// Close closes the writer and uploads the full contents to
+// the server.
 func (b *Writer) Close() error {
-	select {
-	case <-b.doneStream:
-	default:
-		b.stopStreamFn()
-		_ = b.flush() // send all pending lines
+	if b.stop() {
+		b.flush()
 	}
-
-	return b.upload() // upload full log history
+	return b.upload()
 }
 
 // upload uploads the full log history to the server.
 func (b *Writer) upload() error {
-	return b.client.Upload(context.Background(), b.id, b.lineList.History())
+	return b.client.Upload(
+		context.Background(), b.id, b.history)
 }
 
 // flush batch uploads all buffered logs to the server.
 func (b *Writer) flush() error {
-	lines := b.lineList.Pending()
+	b.Lock()
+	lines := b.copy()
+	b.clear()
+	b.Unlock()
 	if len(lines) == 0 {
 		return nil
 	}
-
-	return b.client.Batch(context.Background(), b.id, lines)
+	return b.client.Batch(
+		context.Background(), b.id, lines)
 }
 
-func (b *Writer) start() {
+// copy returns a copy of the buffered lines.
+func (b *Writer) copy() []*drone.Line {
+	return append(b.pending[:0:0], b.pending...)
+}
+
+// clear clears the buffer.
+func (b *Writer) clear() {
+	b.pending = b.pending[:0]
+}
+
+func (b *Writer) stop() bool {
+	b.Lock()
+	var closed bool
+	if b.closed == false {
+		close(b.close)
+		closed = true
+		b.closed = true
+	}
+	b.Unlock()
+	return closed
+}
+
+func (b *Writer) stopped() bool {
+	b.Lock()
+	closed := b.closed
+	b.Unlock()
+	return closed
+}
+
+func (b *Writer) start() error {
 	for {
 		select {
-		case <-b.doneStream:
-			return
+		case <-b.close:
+			return nil
 		case <-b.ready:
 			select {
-			case <-b.doneStream:
-				return
+			case <-b.close:
+				return nil
 			case <-time.After(b.interval):
 				// we intentionally ignore errors. log streams
-				// are ephemeral and are considered low priority
+				// are ephemeral and are considered low prioirty
 				// because they are not required for drone to
 				// operator, and the impact of failure is minimal
-				_ = b.flush()
+				b.flush()
 			}
 		}
 	}
