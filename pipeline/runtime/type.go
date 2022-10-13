@@ -134,6 +134,9 @@ type (
 
 		// GetImage returns the image used in the step.
 		GetImage() string
+
+		// GetOutputs returns the expected outputs from the step.
+		GetOutputs() []string
 	}
 
 	// State reports the step state.
@@ -147,6 +150,9 @@ type (
 		// OOMKilled reports whether the step has been
 		// killed by the process manager.
 		OOMKilled bool
+
+		// OutputVariables returned from the step.
+		OutputVariables map[string]string
 	}
 
 	// Secret is an interface that must be implemented
