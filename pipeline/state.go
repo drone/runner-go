@@ -15,10 +15,11 @@ import (
 type State struct {
 	sync.Mutex
 
-	Build  *drone.Build
-	Repo   *drone.Repo
-	Stage  *drone.Stage
-	System *drone.System
+	Build           *drone.Build
+	Repo            *drone.Repo
+	Stage           *drone.Stage
+	System          *drone.System
+	OutputVariables map[string]string
 }
 
 // Cancel cancels the pipeline.
@@ -123,6 +124,15 @@ func (s *State) Find(name string) *drone.Step {
 	return v
 }
 
+func (s *State) AggregateOutputVariables(stepOV map[string]string) {
+	s.Lock()
+	for stepKey, stepVar := range stepOV {
+		// add the output variable to the pipelineOV
+		s.OutputVariables[stepKey] = stepVar
+	}
+	s.Unlock()
+}
+
 //
 // Helper functions. INTERNAL USE ONLY
 //
@@ -192,8 +202,7 @@ func (s *State) start(v *drone.Step) {
 	}
 }
 
-// helper function updates the state of an individual step
-// based on the exit code.
+// helper function updates the state of an individual step based on the exit code.
 func (s *State) finish(v *drone.Step, code int) {
 	switch v.Status {
 	case drone.StatusRunning, drone.StatusPending:

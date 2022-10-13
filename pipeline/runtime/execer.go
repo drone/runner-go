@@ -6,6 +6,7 @@ package runtime
 
 import (
 	"context"
+	"strings"
 	"sync"
 
 	"github.com/drone/drone-go/drone"
@@ -77,6 +78,8 @@ func (e *Execer) Exec(ctx context.Context, spec Spec, state *pipeline.State) err
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
+	// setup the output variables map
+	state.OutputVariables = map[string]string{}
 	// create a directed graph, where each vertex in the graph
 	// is a pipeline step.
 	var d dag.Runner
@@ -218,11 +221,7 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 	}
 
 	copy := step.Clone()
-
-	// read the output env file.
-	outputVars := spec.OutputVariablesToStep()
-	// the pipeline environment variables need to be updated to
-	// reflect the current state of the build and stage.
+	// the pipeline environment variables need to be updated to reflect the current state of the build and stage.
 	state.Lock()
 	copy.SetEnviron(
 		environ.Combine(
@@ -230,7 +229,7 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 			environ.Build(state.Build),
 			environ.Stage(state.Stage),
 			environ.Step(findStep(state, step.GetName())),
-			outputVars,
+			state.OutputVariables,
 		),
 	)
 	state.Unlock()
@@ -279,6 +278,9 @@ func (e *Execer) exec(ctx context.Context, state *pipeline.State, spec Spec, ste
 	}
 
 	if exited != nil {
+		// combine new output variables with existing output variables.
+		filteredOutputVariables := filterOutputVariables(exited.OutputVariables, step.GetOutputs())
+		state.AggregateOutputVariables(filteredOutputVariables)
 		if exited.OOMKilled {
 			log.Debugln("received oom kill.")
 			state.Finish(step.GetName(), 137)
@@ -335,4 +337,19 @@ func secretSlice(step Step) []Secret {
 		secrets = append(secrets, step.GetSecretAt(i))
 	}
 	return secrets
+}
+
+func filterOutputVariables(returnedOutputVariables map[string]string, allowList []string) (filtered map[string]string) {
+	filtered = map[string]string{}
+	//convert returnVars keys to upper case
+	for k, v := range returnedOutputVariables {
+		returnedOutputVariables[strings.ToUpper(k)] = v
+	}
+	for _, validEntry := range allowList {
+		validEntry = strings.ToUpper(validEntry)
+		if value, ok := returnedOutputVariables[validEntry]; ok {
+			filtered[validEntry] = value
+		}
+	}
+	return filtered
 }
