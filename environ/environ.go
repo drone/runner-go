@@ -38,6 +38,7 @@ func System(system *drone.System) map[string]string {
 func Repo(repo *drone.Repo) map[string]string {
 	return map[string]string{
 		"DRONE_REPO":            repo.Slug,
+		"DRONE_REPO_UID": 	 repo.UID,
 		"DRONE_REPO_SCM":        repo.SCM,
 		"DRONE_REPO_OWNER":      repo.Namespace,
 		"DRONE_REPO_NAMESPACE":  repo.Namespace,
