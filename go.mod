@@ -1,6 +1,6 @@
 module github.com/drone/runner-go
 
-go 1.24.0
+go 1.26.10
 
 require (
 	github.com/99designs/basicauth-go v0.0.0-20230316000542-bf6f9cbbf0f8
